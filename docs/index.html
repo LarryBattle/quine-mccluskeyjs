@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- 
+Programmed and CopyWrited by Larry Battle
+Date: 6/28/2012
+-->
+<html>
+<head>
+	<title>Quine-McCluskeyJS by Larry Battle</title>
+	<style type="text/css">
+		body{
+			width: 50em;
+			padding: 1em;
+			border: 0.2em solid grey;
+			margin-left: auto;
+			margin-right: auto;
+			font-size: 1em;
+		}
+		h2{
+			border-bottom: 0.1em solid grey;
+		}
+		pre{
+			border-left: 0.2em solid grey;
+			padding: 1em;
+		}
+		.function{
+			font-size: larger;
+			border: 0.2em;
+		}
+	</style>
+</head>
+<body>
+	<noscript><h2>ERROR: Please enable Javascript.</h2></noscript>
+	<p>
+	Program: Quine-McCluskeyJS <br/>
+	Version: 0.9.1<br/>
+	Programmer: Larry Battle<br/>
+	Licence: MIT &#38; GPL<br/>
+	6/28/2012
+	</p>
+	<h2>What is Quine-McCluskeyJS?</h2>
+	<p>
+		Quine-McCluskeyJS is a Javascript version of the Quine Mccluskey method for Boolean algebra reduction. 
+		Given minterms and the input variables, Quine-McCluskeyJS will return the simplest expression possible in the form Sum of Products. 
+		The current version supports both minterms and don't needs. The next release will include support for multiple functions with different outputs.<br/>
+		View the tutorial at the end for a better understanding.
+	</p>
+	<h2>How to use?</h2>
+	<p>
+		Quine-McCluskeyJS introduces the "qm" namespace.
+		<code><pre>
+var qm = {
+	func: {
+		// contains all methods.
+	},
+	getLeastPrimeImplicants : function( userInput, outputType ){
+		// Point of interest
+	}
+}
+		</pre></code>
+	</p>
+	<p>
+		<span class="function">qm.getLeastPrimeImplicants( object: <b>userInput</b> );	// returns string</span><br/>
+		The only required argument for this function is userInput, which must be an object with string properties named "input" and "minterms". The "dontNeeds" property is optional.<br/>
+		The "inputs" property is the variable names, while "minterms" and "dontNeeds" are integers.
+		Each variable and integer values are separated by commas.<br/>
+<code><pre>
+// Example input.
+var userInput = {
+	inputs: "A,B,C,D",
+	minterms: "2,4,6,8,9,10,12,13,15"
+};
+// Example input with don't Needs.
+userInput2 = {
+	dontNeeds: "5,18,19,21,23",
+	inputs: "A,B,C,D,E",
+	minterms: "2,3,7,10,12,15,27"
+}
+</pre></code>
+	</p>
+	<p>
+		<span class="function">qm.getLeastPrimeImplicants( object: userInput [, string:<b>outputType</b>] ) // returns string</span><br/>
+		outputType is an optional string argument. outputType can equal "boolean" or "raw".<br/>
+		"boolean", the default value, converts the output type to a Boolean algebra expression.<br/>
+		The mark "*", after a variable name, stand for negation. Thus, AB* is read as "A and B not".<br/>
+	</p>
+	<p>
+		Alternatively, outputType as "raw" will return a binary version of the Boolean algebra.<br/>
+		In the "raw" output, 0 stands for false, 1 for true, and a dash ("-") for variable exclusion.
+	</p>
+<code>
+<pre>
+qm.getLeastPrimeImplicants( userInput );	// default output type is Boolean algebra.
+// returns "B*CD* + A*BD* + AB*D* + AC* + ABD"
+
+qm.getLeastPrimeImplicants( userInput, "raw" );
+// returns "-010 + 01-0 + 10-0 + 1-0- + 11-1"
+
+qm.getLeastPrimeImplicants( userInput2 );
+// returns "B*C*D + A*C*DE* + A*BCD*E* + A*CDE + AC*DE"
+
+qm.getLeastPrimeImplicants( userInput2, "raw" );
+// returns "-001- + 0-010 + 01100 + 0-111 + 1-011"
+</pre>
+</code>
+<p>
+<h2>Simple Tutorial:</h2>
+<b>Question:</b><br/>
+Given f( A,B,C ) = ABC + A*BC + AB*C + ABC*, find the simplest SOP, Sum of Products, expression. <br/><br/>
+<b>Solution:</b><br/>
+First convert each midterm into base 10. <br/>
+f( A,B,C ) = *binary form* SOP( 111, 011, 101, 110 ) = *decimal form* SOP( 7, 3, 5, 6 ).<br/>
+<br/>
+Using Quine-McCluskeyJS to get the final answer gives the following.<br/>
+<code><pre>
+var userInput = {
+	inputs: "A,B,C",
+	minterms:"3,5,6,7"
+};
+qm.getLeastPrimeImplicants( userInput ); // returns "BC + AC + AB"
+</pre></code>
+Therefore, the simplest SOP for f(A,B,C) = "BC + AC + AB".<br/>
+<br/>
+<b>Truth Table</b>
+<table>
+	<tr>
+		<th>ABC </th> <th> f( A,B,C )</th>
+	</tr>
+	<tr>
+		<td>000</td> <td> false</td>
+	</tr>
+	<tr>
+		<td>001 </td> <td> false</td>
+	</tr>
+	<tr>
+		<td>010 </td> <td> false</td>
+	</tr>
+	<tr>
+		<td>011 </td> <td> true</td>
+	</tr>
+	<tr>
+		<td>100 </td> <td> false</td>
+	</tr>
+	<tr>
+		<td>101 </td> <td> true</td>
+	</tr>
+	<tr>
+		<td>110 </td> <td> true</td>
+	</tr>
+	<tr>
+		<td>111 </td> <td> true</td>
+	</tr>
+</table>
+</p>
+	<h2>Feedback</h2>
+	<p>
+		Please email me your feedback at <a href="http://bateru.com/news/contact-me">http://bateru.com/news/contact-me</a><br/><br/>
+		Copyright (c) 2010-2012 Larry Battle<br/>
+		Dual licensed under the <a href="http://www.opensource.org/licenses/mit-license.php" alt="MIT license">MIT</a> and <a href="http://www.gnu.org/licenses/gpl.html">GPL</a> licenses.<br/>
+		<br/>
+	</p>
+<script src="js/qm.js"></script>
+<script type="text/javascript">
+(function(){
+	var userInput = {
+		inputs: "A,B,C,D",
+		minterms: "2,4,6,8,9,10,12,13,15"
+	}, userInput2 = {
+		dontNeeds: "5,18,19,21,23",
+		inputs: "A,B,C,D,E",
+		minterms: "2,3,7,10,12,15,27"
+	};
+
+	qm.getLeastPrimeImplicants( userInput, "raw" );
+	qm.getLeastPrimeImplicants( userInput2, "raw" );
+})();
+</script>
+</body>
+</html>
+</script>
