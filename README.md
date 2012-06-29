@@ -6,7 +6,7 @@ In otherwords, this helps you reduce your expressions and boolean algebra.
 Let `*` stand for not.
 Change `A* + AB*` into `(AB)*`
 
-##Todo List## 
+##Todo List##
 * Convert test to qUnit or other framework.
 * Get code review
 * Get feedback.
