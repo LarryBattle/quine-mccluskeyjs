@@ -15,6 +15,9 @@ File: `src\qm.js`
 File: release notes.md
 - Add `Release notes.md`.
 
+File: Readme.md
+- Added an example for clarity.
+
 @Version: 0.9.1
 First commit to github.com
 

@@ -3,15 +3,36 @@ quine-mccluskeyjs
 
 Quine-McCluskeyJS is a Javascript version of the Quine Mccluskey method for Boolean algebra reduction. 
 
-In otherwords, this helps you reduce your expressions and boolean algebra.
+In otherwords, this helps you reduce your logical expressions(boolean algebra).
 
-Let `*` stand for not.
+## Example ##
+Suppose we have the following if condition.
 
-Change `A* + AB*` into `(AB)*`
+	if( !needsApproval || ( needsApproval && !approvalHasBeenGranted ) ){
+		// do something
+	}
 
-##Todo List##
-* Get code review
-* Get feedback.
+Let `A` = `needsApproval` and `B` = `approvalHasBeenGranted`.
+Then the if condition can be expressed as `A* + AB*`, where `*` and `+` represents `not` and `or` respectively. 
+
+We can use the Quine McCluskey Algorithm to simplify the condition statement.
+
+Convert the condition to a SOP, Sum of Products, form, then to minterms as an object literal.
+
+	var userInput = {
+		inputs: "A,B",
+		minterms:"0,1,2"
+	};
+
+Next invoke `qm.getLeastPrimeImplicants` with the user input to get the final form of the SOP.
+
+	qm.getLeastPrimeImplicants( userInput ); // returns "A* + B*"
+
+Thus `A* + AB*` can be simplified to `A* + B*`, which is the same as `(AB)*`.
+
+	if( !( needsApproval && approvalHasBeenGranted ) ){
+		// do something.
+	}
 
 
 ##Please provide feedback!!##
