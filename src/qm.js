@@ -4,7 +4,7 @@
 * @purpose: The Quine McCluskey Algorithm translated into Javascript.
 * In otherwords, this helps you reduce your expressions and boolean algebra.
 * @author Larry Battle <http://bateru.com/news/contact-me>
-* @version 0.9.1
+* @version 0.9.2
 * @date June 28, 2012
 * @license MIT and GPL 3.0
 * http://www.gnu.org/licenses/gpl.html, http://www.opensource.org/licenses/mit-license.php
@@ -52,10 +52,10 @@ var qm = {
             return uniqueArr;
         },
         getUniqueSortedNumArr: function (arr) {
-            return this.getUniqueNumArr((this.insertionSort(arr)));
+            return qm.func.getUniqueNumArr((qm.func.insertionSort(arr)));
         },
         getUniqueSortedNumStr: function (str, delimiter) {
-            return this.getUniqueSortedNumArr(str.split(delimiter)).join(delimiter);
+            return qm.func.getUniqueSortedNumArr(str.split(delimiter)).join(delimiter);
         },
         getObjProperties: function (obj) {
             var keys = [];
@@ -67,7 +67,7 @@ var qm = {
             return keys;
         },
         replaceCharAtIndex: function (a, index, b) {
-            index = (this.isArray(index)) ? index : [index];
+            index = (qm.func.isArray(index)) ? index : [index];
             var i = index.length,
                 j;
             while (i--) {
@@ -109,7 +109,7 @@ var qm = {
             length = length || binary.length;
             if (binary.length !== length) {
                 if (binary.length < length) {
-                    binary = this.getStrCopy("0", (length - binary.length)) + binary;
+                    binary = qm.func.getStrCopy("0", (length - binary.length)) + binary;
                 }
                 else {
                     throw new Error("getBinaryStrFromDecimal(): binary(" + binary + ") > length(" + length + ") too long.");
@@ -163,13 +163,13 @@ var qm = {
         },
         checkInputThenStart: function (obj) {
             //{ parameter:, minterms: [], dontCare: [] }
-            var err = this.isObjInRightFormat(obj);
+            var err = qm.func.isObjInRightFormat(obj);
             if (err) {
                 throw new Error(err);
             }
         },
 		getNumArrFromBinStrArr: function( binStrArr ){
-			var arr = [], i = ( this.isArray( binStrArr ) ) ? binStrArr.length : 1;
+			var arr = [], i = ( qm.func.isArray( binStrArr ) ) ? binStrArr.length : 1;
 			while( i-- ){
 				arr.push( parseInt( binStrArr[ i ], 2 ) );
 			}
@@ -177,12 +177,12 @@ var qm = {
 		},
         //len should be the input length
         getBinStrFromNumArr: function (numArr, len, makeArrUnique) {
-            numArr = (makeArrUnique) ? this.getUniqueNumArr(numArr) : numArr;
+            numArr = (makeArrUnique) ? qm.func.getUniqueNumArr(numArr) : numArr;
             len = len || Math.max.apply(Math, numArr).toString(2).length;
             var arr = [],
                 i = numArr.length;
             while (i--) {
-                arr[i] = this.getBinaryStrFromDecimal(numArr[i], len);
+                arr[i] = qm.func.getBinaryStrFromDecimal(numArr[i], len);
             }
             return arr;
         },
@@ -192,7 +192,7 @@ var qm = {
             var markIndexes = [],
                 markRE = RegExp(mark, "g");
             if (markRE.test(a)) {
-                markIndexes = this.getCharIndexesFromSimStrs(a, b, mark);
+                markIndexes = qm.func.getCharIndexesFromSimStrs(a, b, mark);
 
                 if (!markIndexes.length) {
                     return ""; // the marks for a and b are at difference locations.
@@ -201,8 +201,8 @@ var qm = {
             var aDec = parseInt(a.replace(markRE, 0), 2),
                 bDec = parseInt(b.replace(markRE, 0), 2),
                 // binaryStr must use the biggest number to avoid losing digits positions.
-                binaryStr = this.getBinaryStrFromDecimal((aDec > bDec) ? aDec : bDec, (aDec > bDec) ? a.length : b.length),
-                c = this.getBinaryStrFromDecimal((aDec ^ bDec), binaryStr.length);
+                binaryStr = qm.func.getBinaryStrFromDecimal((aDec > bDec) ? aDec : bDec, (aDec > bDec) ? a.length : b.length),
+                c = qm.func.getBinaryStrFromDecimal((aDec ^ bDec), binaryStr.length);
 
             if ((c.match(/1/g) || []).length !== 1) {
                 // there is not exactly one 1 difference. 
@@ -210,12 +210,12 @@ var qm = {
             }
             // The 1 in xor of the two numbers tells you were they differ.
             markIndexes.push(c.indexOf(1));
-            binaryStr = this.replaceCharAtIndex(binaryStr, markIndexes, mark);
+            binaryStr = qm.func.replaceCharAtIndex(binaryStr, markIndexes, mark);
             return binaryStr;
         },
         // getGroupedMintermsFromBinStrArr(): minterms ( an array of binary strings ), return a object that has the minterms sorted by number of 1 in the binary string.
         getGroupedMintermsFromBinStrArr: function (minterms) {
-            if (!this.isArray(minterms)) {
+            if (!qm.func.isArray(minterms)) {
                 throw new Error("getGroupedMintermsFromBinStrArr(): argument is not an array.\n typeof argument = " + typeof minterms + "\nargument.toString() = " + minterms.toString());
             }
             var sortedObj = {
@@ -238,12 +238,12 @@ var qm = {
                     "value": cminterms
                 });
             }
-            sortedObj.keys = this.insertionSort(keys);
+            sortedObj.keys = qm.func.insertionSort(keys);
             return sortedObj;
         },
         //len should be the input length.
         getGroupedMTFromNumArr: function (numArr, len) {
-            return this.getGroupedMintermsFromBinStrArr(this.getBinStrFromNumArr(numArr, len, true));
+            return qm.func.getGroupedMintermsFromBinStrArr(qm.func.getBinStrFromNumArr(numArr, len, true));
         },
         // getPrimeImplicantsFromMinterms(): mintermsObj is the return object from getGroupedMintermsFromBinStrArr().
         getPrimeImplicantsFromMinterms: function (mintermsObj) {
@@ -290,10 +290,10 @@ var qm = {
                         wasMatchFoundInGroup = false;
                         // Comparing the current value to a group of next level values.
                         while (k--) {
-                            binaryStr = this.getOne1DiffFrom2BinStrCompare(currNum.value, nextOnesGroup[k].value, "-");
+                            binaryStr = qm.func.getOne1DiffFrom2BinStrCompare(currNum.value, nextOnesGroup[k].value, "-");
                             if (binaryStr) {
                                 wasMatchFoundInGroup = true;
-                                newMTStr = this.getUniqueSortedNumStr((currNum.minterms + seperator + nextOnesGroup[k].minterms), seperator);
+                                newMTStr = qm.func.getUniqueSortedNumStr((currNum.minterms + seperator + nextOnesGroup[k].minterms), seperator);
                                 if (!usedMinterms[newMTStr]) {
                                     usedMinterms[newMTStr] = 1;
                                     if (!newMinterms[currentKey]) {
@@ -319,7 +319,7 @@ var qm = {
                 i++;
             } // finished looping through all the ones' groups.
             if (newMinterms.keys.length) {
-                PIArray = PIArray.concat(this.getPrimeImplicantsFromMinterms(newMinterms));
+                PIArray = PIArray.concat(qm.func.getPrimeImplicantsFromMinterms(newMinterms));
             }
             return PIArray;
         },
@@ -344,7 +344,7 @@ var qm = {
             var i = PIArr.length;
 
             while (i--) {
-                PIArr[i].matchLength = this.getMatchLenAfterAppendPIToMT(i, PIArr[i].minterms, mtObj);
+                PIArr[i].matchLength = qm.func.getMatchLenAfterAppendPIToMT(i, PIArr[i].minterms, mtObj);
             }
             return mtObj;
         },
@@ -374,20 +374,20 @@ var qm = {
             return processedMT;
         },
         getLeastPrimeImplicantsByGraph: function (mtStr, PIArr) {
-            var mtObj = this.getMTWithPIMatchAndAddPILenToPI(this.getObjFromStrSplit(mtStr, ",", function () {
+            var mtObj = qm.func.getMTWithPIMatchAndAddPILenToPI(qm.func.getObjFromStrSplit(mtStr, ",", function () {
                 return {
                     "PIs": [],
                     "PIsKeys": {}
                 };
             }), PIArr),
-                processedMT = this.getObjFromStrSplit(mtStr, ",", 0),
+                processedMT = qm.func.getObjFromStrSplit(mtStr, ",", 0),
                 leastPIs = [],
                 tmpPI = {},
                 indexOfPIMax;
             for (var currProp in mtObj) {
                 if (mtObj.hasOwnProperty(currProp)) {
                     if (!processedMT[currProp]) {
-                        indexOfPIMax = this.getIndexOfPIWithMaxLenInMidTerm(mtObj[currProp].PIs, PIArr);
+                        indexOfPIMax = qm.func.getIndexOfPIWithMaxLenInMidTerm(mtObj[currProp].PIs, PIArr);
                         tmpPI = PIArr[indexOfPIMax];
                         if (!tmpPI) {
                             throw new Error("Ohhh sh*t. Logic Error: midTerm[i] is not in any Prime Implicants.");
@@ -396,7 +396,7 @@ var qm = {
                             "minterms": tmpPI.minterms,
                             "value": tmpPI.value
                         });
-                        processedMT = this.markPIsMTsAsProcessed(processedMT, PIArr[indexOfPIMax].minterms);
+                        processedMT = qm.func.markPIsMTsAsProcessed(processedMT, PIArr[indexOfPIMax].minterms);
                     }
                 }
             }
@@ -425,22 +425,21 @@ var qm = {
             return arr;
         },
         getLeastPI: function (obj) {
-            this.checkInputThenStart(obj);
+            qm.func.checkInputThenStart(obj);
             var step1, step2, step3, allMinterms = (obj.dontNeeds) ? (obj.minterms + "," + obj.dontNeeds) : obj.minterms;
-            step1 = this.getGroupedMTFromNumArr(allMinterms.split(","), obj.inputs.split(",").length);
-            step2 = this.getPrimeImplicantsFromMinterms(step1);
-            step3 = this.getLeastPrimeImplicantsByGraph(obj.minterms, step2);
-            return this.convertLeastPIToAlgebra(obj.inputs, step3);
+            step1 = qm.func.getGroupedMTFromNumArr(allMinterms.split(","), obj.inputs.split(",").length);
+            step2 = qm.func.getPrimeImplicantsFromMinterms(step1);
+            step3 = qm.func.getLeastPrimeImplicantsByGraph(obj.minterms, step2);
+            return qm.func.convertLeastPIToAlgebra(obj.inputs, step3);
         }
     },
 	getLeastPrimeImplicants: function( obj, outputType ){
-		var methods = this.func,
-			convertTo = {
+		var convertTo = {
 				"booleanAlgebra" : function( obj ){
-					return methods.getLeastPI( obj )[0].join(" + ");
+					return qm.func.getLeastPI( obj )[0].join(" + ");
 				},
 				"raw":function( obj ){
-					return methods.getLeastPI( obj )[1].join( " + " );
+					return qm.func.getLeastPI( obj )[1].join( " + " );
 				}
 			};
 
