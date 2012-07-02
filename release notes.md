@@ -1,8 +1,14 @@
 @Project Quine-mccluskeyjs
-@Version: 0.9.2
-@Date: 06/30/12
+@Version: 0.9.3
+@Date: 07/1/12
 
 ## Release notes ## 
+
+@Version: 0.9.3
+*Unstable*
+- Added: Added support for Chrome 12+, IE 8+, Firefox 12+ and Opera 11+.
+- Added: JSDOC documentation to source code. 
+- Performance: Code refactored.
 
 @Version: 0.9.2
 File: `tests\js\qm-testcases.js`

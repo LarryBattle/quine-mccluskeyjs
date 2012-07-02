@@ -4,6 +4,11 @@ quine-mccluskeyjs
 Quine-McCluskeyJS is a Javascript version of the Quine Mccluskey method for Boolean algebra reduction. 
 
 In otherwords, this helps you reduce your logical expressions(boolean algebra).
+## Version ##
+0.9.3
+
+## Browser Support ##
+Chrome 12+, IE 8+, Firefox 12+ and Opera 11+
 
 ## Example ##
 Suppose we have the following if condition.
