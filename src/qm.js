@@ -481,7 +481,8 @@ qm.func.getLeastPrimeImplicantsByGraph = function (mtStr, PIArr) {
             };
         });
     var mtObj = qm.func.getMTWithPIMatchAndAddPILenToPI(x, PIArr),
-    processedMT = qm.func.getObjFromStrSplit(mtStr, ",", 0),
+    processedMT = {},
+    //processedMT = qm.func.getObjFromStrSplit(mtStr, ",", 0),
     leastPIs = [],
     tmpPI = {},
     indexOfPIMax;
