@@ -412,18 +412,18 @@ var runTests = function () {
         };
         var obj = {
             0 : [
-                "B*C*D", 
-                "A*C*DE*", 
+                "AC*DE",
                 "A*BCD*E*", 
                 "A*CDE", 
-                "AC*DE"
+                "B*C*D", 
+                "A*C*DE*", 
             ],
             1 : [
-                "-001-", 
-                "0-010", 
+                "1-011",
                 "01100", 
                 "0-111", 
-                "1-011"
+                "-001-", 
+                "0-010", 
             ]
         };
         deepEqual(func(input), obj);
