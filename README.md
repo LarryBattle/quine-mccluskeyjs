@@ -38,6 +38,3 @@ Thus `A* + AB*` can be simplified to `A* + B*`, which is the same as `(AB)*`.
 	if( !( needsApproval && approvalHasBeenGranted ) ){
 		// do something.
 	}
-
-
-##Please provide feedback!!##
