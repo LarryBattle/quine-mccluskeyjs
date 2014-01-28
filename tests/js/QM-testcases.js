@@ -112,13 +112,13 @@ var runTests = function () {
         equal(func(10, 5), "01010");
         equal(func(31, 5), "11111");
     });
-	test("Testing qm.func.indexesOfStr()", function () {
+	/*test("Testing qm.func.indexesOfStr()", function () {
         var func = qm.func.indexesOfStr;
         deepEqual(func("", ""), []);
         deepEqual(func("1", "2"), []);
         deepEqual(func("1111", "1"), [0,1,2,3]);
         deepEqual(func("--11-", "1"), [2,3]);
-    });
+    });*/
     test("Testing qm.func.getCharIndexesFromSimStrs() with invalid input", function () {
         var func = qm.func.getCharIndexesFromSimStrs;
         deepEqual(func("", "", ""), []);
@@ -392,14 +392,12 @@ var runTests = function () {
                 "ABD", 
                 "AC*", 
                 "A*BD*", 
-                "AB*D*", 
                 "B*CD*"
             ],
             1 : [
                 "11-1",
                 "1-0-", 
                 "01-0", 
-                "10-0", 
                 "-010"
             ]
         };
@@ -414,18 +412,18 @@ var runTests = function () {
         };
         var obj = {
             0 : [
-                "B*C*D", 
-                "A*C*DE*", 
+                "AC*DE",
                 "A*BCD*E*", 
                 "A*CDE", 
-                "AC*DE"
+                "B*C*D", 
+                "A*C*DE*", 
             ],
             1 : [
-                "-001-", 
-                "0-010", 
+                "1-011",
                 "01100", 
                 "0-111", 
-                "1-011"
+                "-001-", 
+                "0-010", 
             ]
         };
         deepEqual(func(input), obj);
