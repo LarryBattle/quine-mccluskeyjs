@@ -1,5 +1,5 @@
 #Note
-Unstable. Please check back 1/26/2014 for a fix.
+Unstable. 
 
 quine-mccluskeyjs
 =================
