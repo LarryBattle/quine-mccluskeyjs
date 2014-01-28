@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Quine-McCluskeyJS
  *
  * @purpose: Test cases.
@@ -34,6 +34,7 @@ var runTests = function () {
         equal(func("1", "-1101", "-"), "");
         equal(func("11-", "-1101", "-"), "");
         equal(func("1", "1", "-"), "");
+		equal(func("-", "1", "-"), "");
     });
     test("Testing qm.func.getOne1DiffFrom2BinStrCompare() with valid input", function () {
         var func = qm.func.getOne1DiffFrom2BinStrCompare;
@@ -44,6 +45,7 @@ var runTests = function () {
         equal(func("01", "00", "-"), "0-");
         equal(func("111", "011", "-"), "-11");
         equal(func("0111", "1111", "-"), "-111");
+		equal(func("1111", "0111", "-"), "-111");
         equal(func("101-1", "111-1", "-"), "1-1-1");
         equal(func("1---", "0---", "-"), "----");
     });
@@ -112,13 +114,13 @@ var runTests = function () {
         equal(func(10, 5), "01010");
         equal(func(31, 5), "11111");
     });
-	/*test("Testing qm.func.indexesOfStr()", function () {
+	test("Testing qm.func.indexesOfStr()", function () {
         var func = qm.func.indexesOfStr;
         deepEqual(func("", ""), []);
         deepEqual(func("1", "2"), []);
         deepEqual(func("1111", "1"), [0,1,2,3]);
         deepEqual(func("--11-", "1"), [2,3]);
-    });*/
+    });
     test("Testing qm.func.getCharIndexesFromSimStrs() with invalid input", function () {
         var func = qm.func.getCharIndexesFromSimStrs;
         deepEqual(func("", "", ""), []);
@@ -215,6 +217,47 @@ var runTests = function () {
             ]
         };
         deepEqual(func([1]), obj);
+		obj = {
+			"1" : [{
+					"minterms" : "4",
+					"value" : "0100"
+				}, {
+					"minterms" : "2",
+					"value" : "0010"
+				}, {
+					"minterms" : "1",
+					"value" : "0001"
+				}
+			],
+			"2" : [{
+					"minterms" : "12",
+					"value" : "1100"
+				}, {
+					"minterms" : "6",
+					"value" : "0110"
+				}, {
+					"minterms" : "5",
+					"value" : "0101"
+				}
+			],
+			"3" : [{
+					"minterms" : "7",
+					"value" : "0111"
+				}
+			],
+			"4" : [{
+					"minterms" : "15",
+					"value" : "1111"
+				}
+			],
+			"keys" : [
+				1,
+				2,
+				3,
+				4
+			]
+		};
+		deepEqual( func("1,2,4,5,6,7,12,15".split(","), "A,B,C,D".split(",").length), obj);
     });
     test("Testing qm.func.getPrimeImplicantsFromMinterms()", function () {
         var func = function (arr) {
@@ -381,7 +424,7 @@ var runTests = function () {
         ];
         deepEqual(func(mtStr2, PITest), arr);
     });
-    test("Testing qm.func.getLeastPI() with without dontNeeds input", function () {
+    test("Testing qm.func.getLeastPI() without dontNeeds input", function () {
         var func = qm.func.getLeastPI;
         var input = {
             inputs : "A,B,C,D",
@@ -403,7 +446,7 @@ var runTests = function () {
         };
         deepEqual(func(input), obj);
     });
-    test("Testing qm.func.getLeastPI() with with dontNeeds input", function () {
+    test("Testing qm.func.getLeastPI() with dontNeeds input", function () {
         var func = qm.func.getLeastPI;
         var input = {
             dontNeeds : "5,18,19,21,23",
@@ -416,14 +459,14 @@ var runTests = function () {
                 "A*BCD*E*", 
                 "A*CDE", 
                 "B*C*D", 
-                "A*C*DE*", 
+                "A*C*DE*" 
             ],
             1 : [
                 "1-011",
                 "01100", 
                 "0-111", 
                 "-001-", 
-                "0-010", 
+                "0-010" 
             ]
         };
         deepEqual(func(input), obj);
