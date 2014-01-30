@@ -1,5 +1,7 @@
 #Note
-Unstable. 
+Unstable.
+
+Try an alternative library: https://gist.github.com/ysangkok/5707171#file-smallqm-js
 
 quine-mccluskeyjs
 =================
