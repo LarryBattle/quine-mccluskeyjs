@@ -616,7 +616,7 @@ qm.getLeastPrimeImplicants = function (obj, outputType) {
         "booleanAlgebra" : 0,
         "raw" : 1
     };
-    type = (type in types) ? type : "booleanAlgebra";
+    type = (outputType in types) ? outputType : "booleanAlgebra";
     var index = types[type];
     return qm.func.getLeastPI(obj)[index].join(" + ");
 };
