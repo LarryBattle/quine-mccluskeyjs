@@ -4,13 +4,12 @@
  * @purpose: The Quine McCluskey Algorithm translated into Javascript.
  * In otherwords, this helps you reduce your expressions and boolean algebra.
  * @author Larry Battle <http://bateru.com/news/contact-me>
- * @version 0.9.3
- * @date July 1, 2012
  * @license MIT and GPL 3.0
  * http://www.gnu.org/licenses/gpl.html, http://www.opensource.org/licenses/mit-license.php
  */
 
 var qm = {};
+qm.VERSION = "0.9.4";
 qm.func = {};
 /**
 * Finds all the indexes where a character appears in a string. 
@@ -36,7 +35,7 @@ qm.func.indexesOfStr = function(str, ch){
 * @param {Object} obj
 * @returns {Boolean}
 */
-qm.func.isArray = function (obj) {
+Array.isArray = Array.isArray || function (obj) {
     return Object.prototype.toString.call(obj) === "[object Array]";
 };
 /*
@@ -110,7 +109,7 @@ qm.func.getUniqueSortedNumStr = function (str, delimiter) {
 * @param {String} b
 */
 qm.func.replaceCharAtIndex = function (a, index, b) {
-    index = (qm.func.isArray(index)) ? index : [index];
+    index = (Array.isArray(index)) ? index : [index];
     var i = index.length,
 		re;
     while (i--) {
@@ -127,8 +126,12 @@ qm.func.replaceCharAtIndex = function (a, index, b) {
 * @returns {String}
 */
 qm.func.getStrCopy = function (str, copies) {
-    copies = (0 < copies) ? copies : 1;
-    return new Array(1+copies).join(str);
+	copies = (0 < copies) ? copies : 1;
+	var output = "";
+	while( 0 < copies-- ){
+		output += str;
+	}
+	return output;
 };
 /*
 * Converts the segments from a string split to a object with keys of a specified default value.
@@ -257,7 +260,7 @@ qm.func.checkInputThenStart = function (obj) {
 */
 qm.func.getNumArrFromBinStrArr = function (binStrArr) {
     var arr = [],
-    i = (qm.func.isArray(binStrArr)) ? binStrArr.length : 1;
+    i = (Array.isArray(binStrArr)) ? binStrArr.length : 1;
     while (i--) {
         arr.push(parseInt(binStrArr[i], 2));
     }
@@ -321,7 +324,7 @@ qm.func.getOne1DiffFrom2BinStrCompare = function (a, b, mark) {
 * @returns {Object}
 */
 qm.func.getGroupedMintermsFromBinStrArr = function (minterms) {
-    if (!qm.func.isArray(minterms)) {
+    if (!Array.isArray(minterms)) {
         throw new Error("getGroupedMintermsFromBinStrArr(): argument is not an array.\n typeof argument = " + typeof minterms + "\nargument.toString() = " + minterms.toString());
     }
     var sortedObj = {
