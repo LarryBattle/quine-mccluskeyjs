@@ -1,4 +1,4 @@
-/**
+/*
 @purpose Provides Validation of a boolean algebra function using a true table.
 @author Larry Battle
 @date Feb 6, 2014
@@ -148,4 +148,27 @@ BF.formBooleanFunctionFromBinaryArray = function(binarys){
 	}
 	source = "return " + pis.join(" || ") + ";";
 	return new Function( names.join(", "), source );
+};
+
+
+// Extra functions for future optmization use
+
+BinaryFunction.createBinaryLoop = function (iName, loopBody) {
+	var str = "for (var " + iName + " = 0, " + iName + "Len = 2; ";
+	str += iName + " < " + iName + "Len; " + iName + "++) {";
+	str += "\r\n" + loopBody + "\r\n}";
+	return str;
+};
+BinaryFunction.createLoopFunction = function (depth, source) {
+	var i = parseInt(depth, 10);
+
+	source = String(source);
+	while (-1 < i) {
+		source = BinaryFunction.createBinaryLoop(BinaryFunction.getArgNameAtIndex(i), source);
+		i--;
+	}
+	return new Function("binaryLoopFunction", source);
+};
+BinaryFunction.createLoopFunctionCall = function (fnName, depth) {
+	return String(fnName) + "(" + BinaryFunction.getAllArgNames(depth).join(", ") + ")";
 };
