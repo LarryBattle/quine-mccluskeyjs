@@ -28,6 +28,11 @@ Then the if condition can be expressed as `A* + AB*`, where `*` and `+` represen
 We can use the Quine McCluskey Algorithm to simplify the condition statement.
 
 Convert the condition to a SOP, Sum of Products, form, then to minterms as an object literal.
+You can use the function `BinaryFunction.generateMinterms()` to create minterms from the boolean expression.
+Example:
+
+        //helpful function
+        BF.generateMinterms(["A","B"], "A* + AB*") // returns [0, 1, 2]
 
 	var userInput = {
 		inputs: "A,B",
