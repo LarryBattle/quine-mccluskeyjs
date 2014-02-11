@@ -573,25 +573,6 @@ qm.func.getLeastPI = function (obj) {
     return qm.func.convertLeastPIToAlgebra(obj.inputs, step3);
 };
 /*
- * @summary Expands a term with a series of terms.
- * @todo Find out why this is here.
- *
- * @param {String,...} arguments - accepts an large amount of strings.
- * @returns {Array[String, ... ]}
- * @example qm.func.foilArray( "A", "B", "C" ); // returns [ "ABC", "AB*C", "ABC*", "AB*C*" ]
- */
-qm.func.foilArray = function () {
-    var args = Array.prototype.slice.call(arguments),
-    terms = [args[0]];
-    for (var i = 1, argsLen = args.length; i < argsLen; i++) {
-        terms = terms.concat(terms);
-        for (var j = 0, len = terms.length; j < len; j++) {
-            terms[j] += args[i] + ((j < len / 2) ? "" : "*");
-        }
-    }
-    return terms;
-};
-/*
 *
 * @param {}
 * @returns {}
