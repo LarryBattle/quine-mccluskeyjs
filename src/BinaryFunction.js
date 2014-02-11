@@ -173,7 +173,7 @@ BinaryFunction.createLoopFunctionCall = function (fnName, depth) {
  * @todo Speed up the performance.
  * @example
 
-	BF.generateMinterms("abcd".split(""), "ab + a*c") // returns [2, 3, 6, 7, 12, 13, 14, 15]
+	BF.generateMinterms("abcd".split(","), "ab + a*c") // returns [2, 3, 6, 7, 12, 13, 14, 15]
 	
  */
 BF.generateMinterms = function (inputs, expression) {
@@ -282,6 +282,9 @@ BF.expandBinaryTerm = function (term) {
 };
 
 String.prototype.countOccurence = function(str, substr){
+	if(String(str).length < 1 || String(substr).length < 1){
+		return 0;
+	}
 	var c = 0, p = -1;
 	p = str.indexOf(substr, p+1);
 	while( -1 < p ){
