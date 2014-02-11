@@ -21,13 +21,17 @@ qm.func = {};
 qm.func.indexesOfStr = function(str, ch){
 	str = String(str);
 	ch = String(ch);
-	var arr = [];
-	for(var i = 0, len = str.length; i < len; i++){
-		if( str[i] === ch ){
-			arr.push(i);
-		}
+	if(String(str).length < 1 || String(ch).length < 1){
+		return [];
 	}
-	return arr;
+	var idxs = [], p = -1;
+	p = str.indexOf(ch, p+1);
+	
+	while( -1 < p ){
+		idxs.push(p);
+		p = str.indexOf(ch, p+1);
+	}
+	return idxs;
 };
 /*
 * Checks to see if an variable is an array.
