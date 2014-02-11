@@ -175,24 +175,6 @@ qm.func.getBinaryStrFromDecimal = function (dec, length) {
 * @param {String} b
 * @returns {Array[Number]}
 */
-qm.func.getCharIndexesFromSimStrs = function (a, b, commonStr) {
-    var RE_commonStr = RegExp(commonStr, "g"),
-    i = (a.match(RE_commonStr) || []).length,
-    j = 0,
-    indexes = [];
-    if (i === (b.match(RE_commonStr) || []).length) {
-        while (i--) {
-            j += a.substring(j).indexOf(commonStr);
-            if (b[j] !== commonStr) {
-                indexes = [];
-                break;
-            }
-            indexes.push(j);
-            j++;
-        }
-    }
-    return indexes;
-};
 qm.func.getCharIndexesFromSimStrs = function (a, b, chr) {
 	a = String(a);
 	b = String(b);
