@@ -468,15 +468,6 @@ var runTests = function () {
 		var a = qm.getLeastPrimeImplicants(userInput);		
 		equal(a, "ABD + AC* + A*BD* + BC*D* + B*CD*");
 	});
-    module( "new functionality" );
-    test( "test qm.func.foilArray()", function(){
-        var func = qm.func.foilArray;
-        deepEqual( func( "" ), [ "" ] );
-        deepEqual( func( "A" ), [ "A" ] );
-        deepEqual( func( "A", "B" ), [ "AB", "AB*" ] );
-        deepEqual( func( "A", "B", "C" ), [ "ABC", "AB*C", "ABC*", "AB*C*" ] );
-		deepEqual( func( "A", "B", "C", "D" ), [ "ABCD", "AB*CD", "ABC*D", "AB*C*D", "ABCD*", "AB*CD*", "ABC*D*", "AB*C*D*" ] );
-    });
     // test( "", function(){
     // });
 };
