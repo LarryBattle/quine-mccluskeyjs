@@ -281,6 +281,25 @@ BF.expandBinaryTerm = function (term) {
 	return new_queue;
 };
 
+BF.binaryTermToBooleanTerm = function(inputs, bTerm){
+	if(bTerm == null || bTerm.length == 0){
+		return "";
+	}
+	var str = "";
+	for(var i = 0, len = inputs.length; i < len; i++){
+		switch(bTerm.charAt(i)){
+			case "0":
+				str += inputs[i] + "*";
+			break;
+			case "1":
+				str += inputs[i];
+			break;
+			default:
+		}
+	}
+	return str;
+};
+
 String.prototype.countOccurence = function(str, substr){
 	if(String(str).length < 1 || String(substr).length < 1){
 		return 0;
