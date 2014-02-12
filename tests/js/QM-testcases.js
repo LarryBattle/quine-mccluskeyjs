@@ -468,6 +468,19 @@ var runTests = function () {
 		var a = qm.getLeastPrimeImplicants(userInput);		
 		equal(a, "ABD + AC* + A*BD* + BC*D* + B*CD*");
 	});
+	
+     test( "test BinaaryFunction.binaryTermToBooleanTerm()", function(){
+    	
+	var fn = BF.binaryTermToBooleanTerm;
+	
+	var inputs = ["A", "B", "C", "D"];
+	
+	equal( fn(inputs, ""), "" );
+	equal( fn(inputs, "1111"), "ABCD" );
+	equal( fn(inputs, "0000"), "A*B*C*D*" );
+	equal( fn(inputs, "01--"), "A*B" );
+     });
+
     // test( "", function(){
     // });
 };
