@@ -31,12 +31,12 @@ Convert the condition to a SOP, Sum of Products, form, then to minterms as an ob
 You can use the function `BinaryFunction.generateMinterms()` to create minterms from the boolean expression.
 Example:
 
-        //helpful function
-        BF.generateMinterms(["A","B"], "A* + AB*") // returns [0, 1, 2]
+	//helpful function
+	BinaryFunction.generateMinterms(["A", "B"], "A* + AB*") // returns [0, 1, 2]
 
 	var userInput = {
-		inputs: "A,B",
-		minterms:"0,1,2"
+		inputs : "A,B",
+		minterms : "0,1,2"
 	};
 
 Next invoke `qm.getLeastPrimeImplicants` with the user input to get the final form of the SOP.
