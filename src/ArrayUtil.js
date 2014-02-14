@@ -21,9 +21,8 @@ ArrayUtil.compareSets = function(a,b){
   var x = (a.length < b.length) ? 1 : 0;
   if(b.length < a.length){
     var tmp = a;
-    //@todo Check out if this causes a performance hit.
-    a = b.concat();
-    b = tmp.concat();
+    a = b;
+    b = tmp;
   }
   for(var i = 0, l = a.length; i < l; i++){
     if(a[i] !== b[i]){
