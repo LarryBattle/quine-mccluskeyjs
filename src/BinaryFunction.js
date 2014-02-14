@@ -188,6 +188,21 @@ BinaryFunction.generateMinterms = function (inputs, expression) {
 	// @todo Find out if the sorting is needed.
 	return ArrayUtil.getUniqueSortedNumbers( NumberUtil.binsToDecs(binarys) );
 };
+// This is a REALLY USEFUL function.
+// Checks if a boolean algebra expression generates the same minterms.
+/**
+* @param {Array} inputs - Array of strings
+* @param {String} term - Boolean algebra expression
+* @param {Array} minterms - Array of numbers
+* @example
+
+BinaryFunction.doPrimeImpsCoverMinterms( "A,B".split(","), "A", "2,3".split(",")); // return true
+BinaryFunction.doPrimeImpsCoverMinterms( "A,B".split(","), "A", "1,3".split(",")); // return false
+*/
+BinaryFunction.doPrimeImpsCoverMinterms = function(inputs, expression, minterms){
+	return BinaryFunction.generateMinterms( inputs, expression).join(",") === minterms.join(",");
+};
+
 /**
  * @param {Array} inputs - Array of strings
  * @param {String} term - Boolean algebra expression
