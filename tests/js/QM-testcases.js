@@ -13,6 +13,12 @@
 // exports is used to test as a node module.
 var exports = {};
 
+var sortOldPrimeImpsFunc = function(x,y){
+	var a = new String(x.minterms);
+	var b = new String(y.minterms);
+	return a.localeCompare(b);
+};
+
 // contains all tests.
 var runTests = function () {
 	module("StringUtil");
@@ -36,15 +42,15 @@ var runTests = function () {
         deepEqual(func("1111", "1"), [0,1,2,3]);
         deepEqual(func("--11-", "1"), [2,3]);
     });
-    test("Testing StringUtil.indexesOfStrings() with invalid input", function () {
-        var func = StringUtil.indexesOfStrings;
+    test("Testing StringUtil.sharedIndexesOf() with invalid input", function () {
+        var func = StringUtil.sharedIndexesOf;
         deepEqual(func("", "", ""), []);
         deepEqual(func("1", "123", "2"), []);
         deepEqual(func("1111", "123", "1"), []);
         deepEqual(func("--11-", "--31-", "1"), []);
     });
-    test("Testing StringUtil.indexesOfStrings() with valid input", function () {
-        var func = StringUtil.indexesOfStrings;
+    test("Testing StringUtil.sharedIndexesOf() with valid input", function () {
+        var func = StringUtil.sharedIndexesOf;
         deepEqual(func("-", "-", "-"), [0]);
         deepEqual(func("--", "--", "-"), [0, 1]);
         deepEqual(func("111-1", "123-5", "-"), [3]);
@@ -222,12 +228,12 @@ var runTests = function () {
       var o = new CoverageTable();
       o.setMinterms([1]);
       o.addPrimeImp("1", [1]);
-      o.updatePrimeImps();
+      o.updateMintermsInPrimeImps();
       deepEqual(o.getActivePrimeImps(), []);
       var x = o.getEssentialPrimeImps();
       deepEqual(x, [0]);
       o.usePrimeImps(x);
-      o.updatePrimeImps();
+      o.updateMintermsInPrimeImps();
       equal(o.getActivePrimeImps().length, 1);
     });
     test("Testing CoverageTable test2", function(){
@@ -240,14 +246,25 @@ var runTests = function () {
       o.addPrimeImp("1-01", [9,13]);
       o.addPrimeImp("01--", [4,5,6,7]);
       o.addPrimeImp("-1-1", [5,7,13,15]);
-      o.updatePrimeImps();
+      o.updateMintermsInPrimeImps();
       deepEqual(o.getActivePrimeImps(), []);
       var x = o.getEssentialPrimeImps();
       equal(x.length, 2);
       o.usePrimeImps(x);
-      o.updatePrimeImps();
+      o.updateMintermsInPrimeImps();
       equal(o.getActivePrimeImps().length, 2);
     });
+	test("Testing CoverageTable test3", function(){
+		var o = new CoverageTable();
+		o.setMinterms([5, 7, 21, 23, 20, 21, 22, 12, 14, 21, 29, 11, 27]);
+		o.addPrimeImp("011-0", [12,14]);
+		o.addPrimeImp("-1011", [11,27]);
+		o.addPrimeImp("1-101", [21,29]);
+		o.addPrimeImp("-01-1", [5,7,21,23]);
+		o.addPrimeImp("101--", [20,21,22,23]); 
+        o.solve();
+		equal( o.foundAnswer(), true);
+	});
     module("qm");
     test("Testing qm.func.checkFormatOfUserInput()", function () {
         var func = qm.func.checkFormatOfUserInput;
@@ -355,72 +372,6 @@ var runTests = function () {
         equal(1, qm.func.getMatchLenAfterAppendPIToMT(0, "0,4", mtObj));
         deepEqual([0], mtObj[4].PIs);
     });
-    test("Testing qm.func.getIndexOfPIWithMaxLenInMidTerm()", function () {
-        var func = qm.func.getIndexOfPIWithMaxLenInMidTerm;
-        var PITest = {
-            "0" : {
-                matchLength : 0
-            },
-            "1" : {
-                matchLength : 1
-            },
-            "2" : {
-                matchLength : 2
-            },
-            "3" : {
-                matchLength : 3
-            },
-            "4" : {
-                matchLength : 4
-            }
-        };
-        equal(func([], PITest), -1);
-        equal(func([0], PITest), 0);
-        equal(func([0, 1, 2], PITest), 2);
-        equal(func([0, 4], PITest), 4);
-    });
-    test("Testing qm.func.getMTWithPIMatchAndAddPILenToPI()", function () {
-        var mtObj2 = StringUtil.splitToObject("0,1,4", ",", function () {
-                return {
-                    "PIs" : [],
-                    "PIsKeys" : {}
-                };
-            });
-        var PITest2 = qm.func.getPrimeImplicantsFromMinterms(qm.func.getGroupedMTFromNumArr([0, 1, 4]));
-        var obj = {
-            4 : {
-                PIs : [0],
-                PIsKeys : {
-                    0 : 1
-                }
-            },
-            1 : {
-                PIs : [1],
-                PIsKeys : {
-                    1 : 1
-                }
-            },
-            0 : {
-                PIs : [1, 0],
-                PIsKeys : {
-                    1 : 1,
-                    0 : 1
-                }
-            }
-        };
-        var arr = [{
-                minterms : "0,4",
-                value : "-00",
-                matchLength : 2
-            }, {
-                minterms : "0,1",
-                value : "00-",
-                matchLength : 2
-            }
-        ];
-        deepEqual(qm.func.getMTWithPIMatchAndAddPILenToPI(mtObj2, PITest2), obj);
-        deepEqual(PITest2, arr);
-    });
     test("Testing qm.func.getLeastPrimeImplicantsByGraph() with short input", function () {
         var func = qm.func.getLeastPrimeImplicantsByGraph;
         var func2 = function (arr) {
@@ -439,6 +390,7 @@ var runTests = function () {
         deepEqual(func(mtStr2, PITest2), arr);
     });
     test("Testing qm.func.getLeastPrimeImplicantsByGraph() with long input", function () {
+		var s = sortOldPrimeImpsFunc;
         var func = qm.func.getLeastPrimeImplicantsByGraph;
         var func2 = function (arr) {
             return qm.func.getPrimeImplicantsFromMinterms(qm.func.getGroupedMTFromNumArr(arr));
@@ -462,7 +414,7 @@ var runTests = function () {
                 value : "1-101"
             }
         ];
-        deepEqual(func(mtStr2, PITest), arr);
+        deepEqual(func(mtStr2, PITest).sort(s), arr.sort(s));
     });
     test("Testing qm.func.getLeastPI() without dontNeeds input", function () {
         var func = qm.func.getLeastPI;
@@ -472,16 +424,16 @@ var runTests = function () {
         };
         var obj = {
             0 : [
-                "ABD", 
                 "AC*", 
-                "A*BD*", 
-                "B*CD*"
+                "ABD", 
+                "B*CD*",
+                "A*BD*" 
             ],
             1 : [
-                "11-1",
                 "1-0-", 
-                "01-0", 
-                "-010"
+                "11-1",
+                "-010",
+                "01-0"
             ]
         };
         deepEqual(func(input), obj);
@@ -495,18 +447,18 @@ var runTests = function () {
         };
         var obj = {
             0 : [
-                "AC*DE",
-                "A*BCD*E*", 
-                "A*CDE", 
                 "B*C*D", 
-                "A*C*DE*"
+                "A*CDE", 
+                "AC*DE",
+                "A*C*DE*",
+                "A*BCD*E*" 
             ],
             1 : [
-                "1-011",
-                "01100",
-                "0-111",
 				"-001-",
-                "0-010"
+                "0-111",
+                "1-011",
+                "0-010",
+                "01100"
             ]
         };
         deepEqual(func(input), obj);
@@ -516,8 +468,8 @@ var runTests = function () {
 			inputs: "A,B,C,D",
 			minterms: "2,4,6,8,9,10,12,13,15"
 		};
-		var a = qm.getLeastPrimeImplicants(userInput);		
-		equal(a, "ABD + AC* + A*BD* + BC*D* + B*CD*");
+		var a = qm.getLeastPrimeImplicants(userInput);
+		equal(a, "AC* + ABD + B*CD* + A*BD*");
 	});
     // test( "", function(){
     // });
