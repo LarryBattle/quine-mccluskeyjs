@@ -150,3 +150,22 @@ StringUtil.splitToObject = function (str, delimiter, propValue) {
 	}
 	return obj;
 };
+/**
+* Returns the number of times a substring appears within a string. 
+*
+* @param {String} str - string 
+* @param {String} substr - substring 
+* @return {Number} 
+*/
+StringUtil.count = function(str, substr){
+	if(String(str).length < 1 || String(substr).length < 1){
+		return 0;
+	}
+	var c = 0, p = -1;
+	p = str.indexOf(substr, p+1);
+	while( -1 < p ){
+		c++;
+		p = str.indexOf(substr, p+1);
+	}
+	return c;
+};

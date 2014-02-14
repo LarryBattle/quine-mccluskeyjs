@@ -282,15 +282,3 @@ BF.expandBinaryTerm = function (term) {
 	return new_queue;
 };
 
-String.prototype.countOccurence = function(str, substr){
-	if(String(str).length < 1 || String(substr).length < 1){
-		return 0;
-	}
-	var c = 0, p = -1;
-	p = str.indexOf(substr, p+1);
-	while( -1 < p ){
-		c++;
-		p = str.indexOf(substr, p+1);
-	}
-	return c;
-};
