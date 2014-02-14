@@ -12,6 +12,26 @@ ArrayUtil.arrayToSet = function (arr) {
 	}
 	return obj;
 };
+// Returns 0 if b is a subset of a, and 1 if a is a subset of b.
+// This function assumes that the arrays are contain unique sorted values. 
+ArrayUtil.compareSets = function(a,b){
+  if(!ArrayUtil.isArray(a) || !ArrayUtil.isArray(b)){
+    throw new Error("Both a and b must be arrays.");
+  }
+  var x = (a.length < b.length) ? 1 : 0;
+  if(b.length < a.length){
+    var tmp = a;
+    //@todo Check out if this causes a performance hit.
+    a = b.concat();
+    b = tmp.concat();
+  }
+  for(var i = 0, l = a.length; i < l; i++){
+    if(a[i] !== b[i]){
+      return -1;
+    }
+  }
+  return x;
+};
 ArrayUtil.filter = function( arr, fn ){
   if(!ArrayUtil.isArray(arr)){
     throw new Error("arr must be an array.");

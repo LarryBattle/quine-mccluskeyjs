@@ -21,7 +21,8 @@ ctp.addPrimeImp = function(binaryStr, minterms){
   this.primeImps.push({
     binaryStr : binaryStr,
     orginalMinterms: minterms.concat(),
-    minterms : minterms
+//@todo Find out if there is a huge performance hit
+    minterms : ArrayUtil.getUniqueSortedNumbers( minterms )
   });
   return this;
 };

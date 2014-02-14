@@ -128,6 +128,20 @@ var runTests = function () {
         deepEqual(func([3, 3, 3, 2, 2, 1]), [1, 2, 3]);
         deepEqual(func([1, 10, 3, 10, 10, 10, 5, 3, 2, 1]), [1, 2, 3, 5, 10]);
     });
+    test("Testing ArrayUtil.compareSets()", function(){
+      var fn = ArrayUtil.compareSets;
+      equal(fn([1,2,3,4,5],[1,2,3]), 0 );
+      equal(fn([1,2,3],[1,2,3]), 0 );
+      equal(fn([1,2,3],[1]), 0 );
+
+      equal(fn([1,2,3],[1,2,3,4,5]), 1 );
+      equal(fn([1],[1,2,3]), 1 );
+
+      equal(fn([1,2],[1,3]), -1);
+      equal(fn([1,2],[2,3]), -1);
+      equal(fn([1,2],[3]), -1);
+      equal(fn([1,2],[3,4]), -1);
+    });
     module("NumberUtil");
     test("Testing NumberUtil.decToBin()", function () {
         var func = NumberUtil.decToBin;
@@ -152,7 +166,7 @@ var runTests = function () {
         deepEqual(func([0, 1, 2, 3], 5), ["00000", "00001", "00010", "00011"]);
         deepEqual(func([0, 1, 2, 2, 3, 3, 3], 5, true), ["00000", "00001", "00010", "00011"]);
     });
-	module("MintermUtil");
+    module("MintermUtil");
     test("Testing MintermUtil.binsToGroupedMinterms()", function () {
         var func = function (arr) {
             return MintermUtil.binsToGroupedMinterms(NumberUtil.decsToBins(arr));
@@ -203,7 +217,38 @@ var runTests = function () {
         };
         deepEqual(func([0, 1, 2, 3, 4, 5, 6, 7]), obj);
     });
-	module("qm");
+    module("CoverageTable");
+    test("Testing CoverageTable", function(){
+      var o = new CoverageTable();
+      o.setMinterms([1]);
+      o.addPrimeImp("1", [1]);
+      o.updatePrimeImps();
+      deepEqual(o.getActivePrimeImps(), []);
+      var x = o.getEssentialPrimeImps();
+      deepEqual(x, [0]);
+      o.usePrimeImps(x);
+      o.updatePrimeImps();
+      equal(o.getActivePrimeImps().length, 1);
+    });
+    test("Testing CoverageTable test2", function(){
+      var o = new CoverageTable();
+      o.setMinterms([4,5,6,8,9,10,13]);
+      o.addPrimeImp("0-00", [0,4]);
+      o.addPrimeImp("-000", [0,8]);
+      o.addPrimeImp("100-", [8,9]);
+      o.addPrimeImp("10-0", [8,10]);
+      o.addPrimeImp("1-01", [9,13]);
+      o.addPrimeImp("01--", [4,5,6,7]);
+      o.addPrimeImp("-1-1", [5,7,13,15]);
+      o.updatePrimeImps();
+      deepEqual(o.getActivePrimeImps(), []);
+      var x = o.getEssentialPrimeImps();
+      equal(x.length, 2);
+      o.usePrimeImps(x);
+      o.updatePrimeImps();
+      equal(o.getActivePrimeImps().length, 2);
+    });
+    module("qm");
     test("Testing qm.func.checkFormatOfUserInput()", function () {
         var func = qm.func.checkFormatOfUserInput;
         var obj = {
