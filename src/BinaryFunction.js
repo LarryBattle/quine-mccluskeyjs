@@ -8,7 +8,7 @@ var bFn = BF.formBooleanFunctionFromBinaryArray("11-1,1-0-,01-0,-010".split(",")
 var mts = [2,4,6,8,9,10,12,13,15];
 BF.test(mts, bFn); // returns [].
 */
-var BinaryFunction = function () {};
+var BinaryFunction = {};
 var BF = BinaryFunction;
 BinaryFunction.getArgNameAtIndex = function (i) {
 	var length_of_alphabeth = 26,
@@ -50,7 +50,7 @@ BinaryFunction.convertArrayToHashTable = function (arr) {
 // BF.test([0,1,2], function(a,b){ return !a;}); // returns [{"index":2,"expected":true,"output":false}]
 BF.test = function (minterms, fn) {
 	var MAX_FUNC_ARGUMENTS = 27;
-	if (!Array.isArray(minterms) || (0 < minterms.length && isNaN(minterms[0]))) {
+	if (!ArrayUtil.isArray(minterms) || (0 < minterms.length && isNaN(minterms[0]))) {
 		throw new Error("Must pass an array of numbers as the first argument.");
 	}
 	if (typeof fn !== "function" || fn.length < 1) {
@@ -133,7 +133,7 @@ BF.formBooleanStringFromBinary = function (names, binary) {
 // All prime impliment strings should be of equal length.
 // return {Function} boolean function that represents the passed binary-like (Prime Impliments) values.
 BF.formBooleanFunctionFromBinaryArray = function (binarys) {
-	if (!Array.isArray(binarys) || binarys.lenght < 1) {
+	if (!ArrayUtil.isArray(binarys) || binarys.lenght < 1) {
 		throw new Error("Must pass an non-empty array of binary strings.");
 	}
 	var source = "";
@@ -186,7 +186,8 @@ BF.generateMinterms = function (inputs, expression) {
 	for(var i = 0, len = terms.length; i < len; i++){
 		binarys = binarys.concat( BF.expandBinaryTerm( BF.termToBinaryTerm(inputs, terms[i]) ) );
 	}
-	return qm.func.getUniqueSortedNumArr( qm.func.getNumArrFromBinStrArr(binarys) );
+	// @todo Find out if the sorting is needed.
+	return ArrayUtil.getUniqueSortedNumbers( NumberUtil.binsToDecs(binarys) );
 };
 /**
  * @param {Array} inputs - Array of strings
@@ -237,7 +238,7 @@ BF.checkForUniqueInputs = function (inputs, term) {
 /**
 * Finds the first "-" character then splits it in positive and negative component.
 */
-BF.splitOnce = function(str){
+BF.getBinPair = function(str){
 	str = String(str);
 	p = str.indexOf("-");
 	if (-1 < p) {
@@ -274,30 +275,11 @@ BF.expandBinaryTerm = function (term) {
 	while (-1 < String(curr_queue[0]).indexOf("-")) {
 		new_queue = [];
 		for (var i = 0, len = curr_queue.length; i < len; i++) {
-			new_queue = new_queue.concat( BF.splitOnce( curr_queue[i]));
+			new_queue = new_queue.concat( BF.getBinPair( curr_queue[i]));
 		}
 		curr_queue = new_queue.concat();
 	}
 	return new_queue;
-};
-
-BF.binaryTermToBooleanTerm = function(inputs, bTerm){
-	if(bTerm == null || bTerm.length == 0){
-		return "";
-	}
-	var str = "";
-	for(var i = 0, len = inputs.length; i < len; i++){
-		switch(bTerm.charAt(i)){
-			case "0":
-				str += inputs[i] + "*";
-			break;
-			case "1":
-				str += inputs[i];
-			break;
-			default:
-		}
-	}
-	return str;
 };
 
 String.prototype.countOccurence = function(str, substr){

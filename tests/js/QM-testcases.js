@@ -15,8 +15,58 @@ var exports = {};
 
 // contains all tests.
 var runTests = function () {
-    test("Testing qm.func.getOne1DiffFrom2BinStrCompare() with invalid input", function () {
-        var func = qm.func.getOne1DiffFrom2BinStrCompare;
+	module("StringUtil");
+	test("Testing StringUtil.splitToObject()", function () {
+        var func = StringUtil.splitToObject;
+        
+        deepEqual(func("", ""), {"":1});
+        deepEqual(func("0"), {0 : 1});
+        var obj = {
+            3 : 1,
+            2 : 1,
+            1 : 1,
+            0 : 1
+        };
+        deepEqual(func("0,1,2,3"), obj);
+    });
+	test("Testing StringUtil.indexesOf()", function () {
+        var func = StringUtil.indexesOf;
+        deepEqual(func("", ""), []);
+        deepEqual(func("1", "2"), []);
+        deepEqual(func("1111", "1"), [0,1,2,3]);
+        deepEqual(func("--11-", "1"), [2,3]);
+    });
+    test("Testing StringUtil.indexesOfStrings() with invalid input", function () {
+        var func = StringUtil.indexesOfStrings;
+        deepEqual(func("", "", ""), []);
+        deepEqual(func("1", "123", "2"), []);
+        deepEqual(func("1111", "123", "1"), []);
+        deepEqual(func("--11-", "--31-", "1"), []);
+    });
+    test("Testing StringUtil.indexesOfStrings() with valid input", function () {
+        var func = StringUtil.indexesOfStrings;
+        deepEqual(func("-", "-", "-"), [0]);
+        deepEqual(func("--", "--", "-"), [0, 1]);
+        deepEqual(func("111-1", "123-5", "-"), [3]);
+        deepEqual(func("--11-", "--31-", "-"), [0, 1, 4]);
+    });
+	test("Testing StringUtil.getUniqueSortedNumberString()", function () {
+        var func = StringUtil.getUniqueSortedNumberString;
+        equal(func("12,14,11,27,21,29,23,5,7,20,22", ","), "5,7,11,12,14,20,21,22,23,27,29");
+    });
+    test("Testing StringUtil.replaceCharAtIndex()", function () {
+        var func = StringUtil.replaceCharAtIndex;
+        equal(func("5", 0, "1"), "1");
+        equal(func("444", 0, "1"), "144");
+        equal(func("444", 1, "1"), "414");
+        equal(func("444", 2, "1"), "441");
+        equal(func("1211", 1, "1"), "1111");
+        equal(func("3", [0], "1"), "1");
+        equal(func("144", [1, 1], ""), "1");
+        equal(func("1234", [1, 2, 3], "1"), "1111");
+    });
+    test("Testing StringUtil.replaceOneDiff() with invalid input", function () {
+        var func = StringUtil.replaceOneDiff;
         equal(func("01", "111", "-"), "");
         equal(func("1111-", "-1111", "-"), "");
         equal(func("---", "-00", "-"), "");
@@ -25,8 +75,8 @@ var runTests = function () {
         equal(func("1", "1", "-"), "");
 		equal(func("-", "1", "-"), "");
     });
-    test("Testing qm.func.getOne1DiffFrom2BinStrCompare() with valid input", function () {
-        var func = qm.func.getOne1DiffFrom2BinStrCompare;
+    test("Testing StringUtil.replaceOneDiff() with valid input", function () {
+        var func = StringUtil.replaceOneDiff;
         equal(func("0", "1", "-"), "-");
         equal(func("1", "0", "-"), "-");
         equal(func("01", "00", "-"), "0-");
@@ -38,16 +88,17 @@ var runTests = function () {
         equal(func("101-1", "111-1", "-"), "1-1-1");
         equal(func("1---", "0---", "-"), "----");
     });
-    test("Testing qm.func.getStrCopy()", function () {
-        var func = qm.func.getStrCopy;
+    test("Testing StringUtil.copy()", function () {
+        var func = StringUtil.copy;
         equal(func("1"), "1");
         equal(func("1", 1), "1");
         equal(func("#", 2), "##");
         equal(func("*", 5), "*****");
         equal(func("1", 5), "11111");
     });
-    test("Testing qm.func.insertionSort()", function () {
-        var func = qm.func.insertionSort;
+	module("ArrayUtil");
+    test("Testing ArrayUtil.insertionSort()", function () {
+        var func = ArrayUtil.insertionSort;
         deepEqual(func([]), []);
         deepEqual(func([1]), [1]);
         deepEqual(func([1, 2]), [1, 2]);
@@ -59,16 +110,16 @@ var runTests = function () {
         deepEqual(func([50, 1000000, 20000, 5, 4, 3, 2, 1, -10000, 0]), [-10000, 0, 1, 2, 3, 4, 5, 50, 20000, 1000000]);
         deepEqual(func([5, 4, 5, 4, 5, 4, 5, 4, 5, 3, 2, 3, 2, 3, 1]), [1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5]);
     });
-    test("Testing qm.func.getUniqueNumArr()", function () {
-        var func = qm.func.getUniqueNumArr;
+    test("Testing ArrayUtil.getUniqueNumbers()", function () {
+        var func = ArrayUtil.getUniqueNumbers;
         deepEqual(func([]), []);
         deepEqual(func([1, 1, 1, 1]), [1]);
         deepEqual(func([1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5]), [1, 2, 3, 4, 5]);
         deepEqual(func([3, 3, 3, 2, 2, 1]), [3, 2, 1]);
         deepEqual(func([1, 2, 2, 3, 3, 3, 2, 2, 1]), [1, 2, 3]);
     });
-    test("Testing qm.func.getUniqueSortedNumArr()", function () {
-        var func = qm.func.getUniqueSortedNumArr;
+    test("Testing ArrayUtil.getUniqueSortedNumbers()", function () {
+        var func = ArrayUtil.getUniqueSortedNumbers;
         deepEqual(func([]), []);
         deepEqual(func([1]), [1]);
         deepEqual(func([1, 2]), [1, 2]);
@@ -77,23 +128,9 @@ var runTests = function () {
         deepEqual(func([3, 3, 3, 2, 2, 1]), [1, 2, 3]);
         deepEqual(func([1, 10, 3, 10, 10, 10, 5, 3, 2, 1]), [1, 2, 3, 5, 10]);
     });
-    test("Testing qm.func.getUniqueSortedNumStr()", function () {
-        var func = qm.func.getUniqueSortedNumStr;
-        equal(func("12,14,11,27,21,29,23,5,7,20,22", ","), "5,7,11,12,14,20,21,22,23,27,29");
-    });
-    test("Testing qm.func.replaceCharAtIndex()", function () {
-        var func = qm.func.replaceCharAtIndex;
-        equal(func("5", 0, "1"), "1");
-        equal(func("444", 0, "1"), "144");
-        equal(func("444", 1, "1"), "414");
-        equal(func("444", 2, "1"), "441");
-        equal(func("1211", 1, "1"), "1111");
-        equal(func("3", [0], "1"), "1");
-        equal(func("144", [1, 1], ""), "1");
-        equal(func("1234", [1, 2, 3], "1"), "1111");
-    });
-    test("Testing qm.func.getBinaryStrFromDecimal()", function () {
-        var func = qm.func.getBinaryStrFromDecimal;
+    module("NumberUtil");
+    test("Testing NumberUtil.decToBin()", function () {
+        var func = NumberUtil.decToBin;
         equal(func(0), "0");
         equal(func(1), "1");
         equal(func(10), "1010");
@@ -103,29 +140,8 @@ var runTests = function () {
         equal(func(10, 5), "01010");
         equal(func(31, 5), "11111");
     });
-	test("Testing qm.func.indexesOfStr()", function () {
-        var func = qm.func.indexesOfStr;
-        deepEqual(func("", ""), []);
-        deepEqual(func("1", "2"), []);
-        deepEqual(func("1111", "1"), [0,1,2,3]);
-        deepEqual(func("--11-", "1"), [2,3]);
-    });
-    test("Testing qm.func.getCharIndexesFromSimStrs() with invalid input", function () {
-        var func = qm.func.getCharIndexesFromSimStrs;
-        deepEqual(func("", "", ""), []);
-        deepEqual(func("1", "123", "2"), []);
-        deepEqual(func("1111", "123", "1"), []);
-        deepEqual(func("--11-", "--31-", "1"), []);
-    });
-    test("Testing qm.func.getCharIndexesFromSimStrs() with valid input", function () {
-        var func = qm.func.getCharIndexesFromSimStrs;
-        deepEqual(func("-", "-", "-"), [0]);
-        deepEqual(func("--", "--", "-"), [0, 1]);
-        deepEqual(func("111-1", "123-5", "-"), [3]);
-        deepEqual(func("--11-", "--31-", "-"), [0, 1, 4]);
-    });
-    test("Testing qm.func.getBinStrFromNumArr()", function () {
-        var func = qm.func.getBinStrFromNumArr;
+    test("Testing NumberUtil.decsToBins()", function () {
+        var func = NumberUtil.decsToBins;
         deepEqual(func([]), []);
         deepEqual(func([0]), ["0"]);
         deepEqual(func([1]), ["1"]);
@@ -136,9 +152,10 @@ var runTests = function () {
         deepEqual(func([0, 1, 2, 3], 5), ["00000", "00001", "00010", "00011"]);
         deepEqual(func([0, 1, 2, 2, 3, 3, 3], 5, true), ["00000", "00001", "00010", "00011"]);
     });
-    test("Testing qm.func.getGroupedMintermsFromBinStrArr()", function () {
+	module("MintermUtil");
+    test("Testing MintermUtil.binsToGroupedMinterms()", function () {
         var func = function (arr) {
-            return qm.func.getGroupedMintermsFromBinStrArr(qm.func.getBinStrFromNumArr(arr));
+            return MintermUtil.binsToGroupedMinterms(NumberUtil.decsToBins(arr));
         };
         var obj = {
             keys : [1],
@@ -186,8 +203,9 @@ var runTests = function () {
         };
         deepEqual(func([0, 1, 2, 3, 4, 5, 6, 7]), obj);
     });
-    test("Testing qm.func.isObjInRightFormat()", function () {
-        var func = qm.func.isObjInRightFormat;
+	module("qm");
+    test("Testing qm.func.checkFormatOfUserInput()", function () {
+        var func = qm.func.checkFormatOfUserInput;
         var obj = {
             inputs : "A,B,C,D,E",
             minterms : "5,7,11,12,27,29",
@@ -281,21 +299,9 @@ var runTests = function () {
         ];
         deepEqual(func([5, 7, 21, 23, 20, 21, 22, 12, 14, 21, 29, 11, 27]), arr);
     });
-    test("Testing qm.func.getObjFromStrSplit()", function () {
-        var func = qm.func.getObjFromStrSplit;
-        
-        deepEqual(func("", ""), {"":1});
-        deepEqual(func("0"), {0 : 1});
-        var obj = {
-            3 : 1,
-            2 : 1,
-            1 : 1,
-            0 : 1
-        };
-        deepEqual(func("0,1,2,3"), obj);
-    });
+    
     test("Testing qm.func.getMatchLenAfterAppendPIToMT()", function () {
-        var mtObj = qm.func.getObjFromStrSplit("1,2,3,4", ",", (function () {
+        var mtObj = StringUtil.splitToObject("1,2,3,4", ",", (function () {
                     return {
                         "PIs" : [],
                         "PIsKeys" : {}
@@ -323,13 +329,13 @@ var runTests = function () {
                 matchLength : 4
             }
         };
-        equal(-1, func([], PITest), -1);
+        equal(func([], PITest), -1);
         equal(func([0], PITest), 0);
         equal(func([0, 1, 2], PITest), 2);
         equal(func([0, 4], PITest), 4);
     });
     test("Testing qm.func.getMTWithPIMatchAndAddPILenToPI()", function () {
-        var mtObj2 = qm.func.getObjFromStrSplit("0,1,4", ",", function () {
+        var mtObj2 = StringUtil.splitToObject("0,1,4", ",", function () {
                 return {
                     "PIs" : [],
                     "PIsKeys" : {}
@@ -468,25 +474,13 @@ var runTests = function () {
 		var a = qm.getLeastPrimeImplicants(userInput);		
 		equal(a, "ABD + AC* + A*BD* + BC*D* + B*CD*");
 	});
-	
-     test( "test BinaaryFunction.binaryTermToBooleanTerm()", function(){
-    	
-	var fn = BF.binaryTermToBooleanTerm;
-	
-	var inputs = ["A", "B", "C", "D"];
-	
-	equal( fn(inputs, ""), "" );
-	equal( fn(inputs, "1111"), "ABCD" );
-	equal( fn(inputs, "0000"), "A*B*C*D*" );
-	equal( fn(inputs, "01--"), "A*B" );
-     });
-
     // test( "", function(){
     // });
 };
 var reRunTests = function () {
     QUnit.reset(); // should clear the DOM
     QUnit.init(); // resets the qunit test environment
+    // QUnit.load() <- THis function needs to be refactored.
     QUnit.start(); // allows for the new test to be captured.
     runTests();
 };
