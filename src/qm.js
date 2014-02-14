@@ -11,8 +11,9 @@
 // requires("NumberUtil")
 // requires("StringUtil")
 // requires("MintermUtil")
+// requires("CoverageTable");
 var qm = {
-		VERSION : "0.9.4",
+		VERSION : "0.9.5",
 		func : {}
 	};
 /*
@@ -176,80 +177,30 @@ qm.func.getMatchLenAfterAppendPIToMT = function (PIIndex, piMtStr, mtObj) {
  * @param {}
  * @returns {}
  */
-qm.func.getMTWithPIMatchAndAddPILenToPI = function (mtObj, PIArr) {
-	var i = PIArr.length;
-	while (i--) {
-		PIArr[i].matchLength = qm.func.getMatchLenAfterAppendPIToMT(i, PIArr[i].minterms, mtObj);
-	}
-	return mtObj;
-};
-/*
- *
- * @param {}
- * @returns {}
- */
-qm.func.getIndexOfPIWithMaxLenInMidTerm = function (idxes, PIidxes) {
-	var i = idxes.length,
-	indexOfPIWithMaxLen,
-	currPILen;
-
-	if (i < 2) {
-		return (i--) ? idxes[i] : i;
-	}
-	indexOfPIWithMaxLen = idxes[--i];
-	while (i--) {
-		currPILen = PIidxes[idxes[i]].matchLength;
-		if ((PIidxes[indexOfPIWithMaxLen].matchLength) < currPILen) {
-			indexOfPIWithMaxLen = idxes[i];
-		}
-	}
-	return indexOfPIWithMaxLen;
-};
-/*
- *
- * @param {}
- * @returns {}
- */
-qm.func.markPIsMTsAsProcessed = function (processedMT, piMtStr) {
-	var arr = piMtStr.split(","),
-	i = arr.length;
-	while (i--) {
-		processedMT[arr[i]] = 1;
-	}
-	return processedMT;
-};
-/*
- *
- * @param {}
- * @returns {}
- */
+//@todo Optimize this code
 qm.func.getLeastPrimeImplicantsByGraph = function (mtStr, PIArr) {
-	var x = StringUtil.splitToObject(mtStr, ",", function () {
-			return {
-				"PIs" : [],
-				"PIsKeys" : {}
-			};
-		});
-	// @todo get rid of mtObj or `x` because their the same thing.
-	var mtObj = qm.func.getMTWithPIMatchAndAddPILenToPI(x, PIArr),
-	processedMT = {},
-	leastPIs = [],
-	tmpPI = {},
-	indexOfPIMax;
-	for (var currProp in mtObj) {
-		if (mtObj.hasOwnProperty(currProp)) {
-			if (!processedMT[currProp]) {
-				indexOfPIMax = qm.func.getIndexOfPIWithMaxLenInMidTerm(mtObj[currProp].PIs, PIArr);
-				tmpPI = PIArr[indexOfPIMax];
-				leastPIs.push({
-					"minterms" : tmpPI.minterms,
-					"value" : tmpPI.value
-				});
-				processedMT = qm.func.markPIsMTsAsProcessed(processedMT, PIArr[indexOfPIMax].minterms);
-			}
+	var minterms = mtStr.split(",");
+	var i, l, p, x;
+	var out = [];
+	var o = new CoverageTable();
+	
+	o.setMinterms(minterms);
+	for(i = 0, l = PIArr.length; i < l; i++){
+		p = PIArr[i];
+		o.addPrimeImp( p.value, p.minterms.split(",") );	
+	}
+	o.solve();
+	if(o.foundAnswer()){	
+		x = o.getActivePrimeImps();
+		for(i = 0, l = x.length; i < l; i++){
+			p = x[i];
+			out.push({
+				minterms : p.orginalMinterms.join(","),
+				value : p.binaryStr
+			});
 		}
 	}
-	return leastPIs;
+	return out;
 };
 /*
  *
