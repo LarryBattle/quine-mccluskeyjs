@@ -4,6 +4,45 @@ var StringUtil = {};
 //StringUtil
 //---------
 /*
+ * Replaces the indexes of a string with a specified character.
+ *
+ * @param {String} a
+ * @param {Array|Number} index
+ * @param {String} b
+ */
+StringUtil.replaceCharAtIndex = function (a, index, b) {
+	index = (ArrayUtil.isArray(index)) ? index : [index];
+	var i = index.length,
+	re;
+	while (i--) {
+		re = new RegExp("^(.{" + index[i] + "})(.)");
+		a = a.replace(re, "$1" + b);
+	}
+	return a;
+};
+/**
+ * Finds all the indexes where a character appears in a string.
+ *
+ * @param {String} str
+ * @param {String} ch
+ * @returns {Array} array of indexes
+ */
+StringUtil.indexesOf = function (str, ch) {
+	str = String(str);
+	ch = String(ch);
+	if (String(str).length < 1 || String(ch).length < 1) {
+		return [];
+	}
+	var idxs = [],
+	p = -1;
+	p = str.indexOf(ch, p + 1);
+	while (-1 < p) {
+		idxs.push(p);
+		p = str.indexOf(ch, p + 1);
+	}
+	return idxs;
+};
+/*
  * Returns the indexes of a character in two strings.
  * An empty array is returned if the two strings have different lengths or don't have the same indexes of the character position.
  *
@@ -11,7 +50,7 @@ var StringUtil = {};
  * @param {String} b
  * @returns {Array[Number]}
  */
-StringUtil.indexesOfStrings = function (a, b, chr) {
+StringUtil.sharedIndexesOf = function (a, b, chr) {
 	a = String(a);
 	b = String(b);
 
@@ -77,45 +116,6 @@ StringUtil.getUniqueSortedNumberString = function (str, delimiter) {
 	return ArrayUtil.getUniqueSortedNumbers(str.split(delimiter)).join(delimiter);
 };
 /*
- * Replaces the indexes of a string with a specified character.
- *
- * @param {String} a
- * @param {Array|Number} index
- * @param {String} b
- */
-StringUtil.replaceCharAtIndex = function (a, index, b) {
-	index = (ArrayUtil.isArray(index)) ? index : [index];
-	var i = index.length,
-	re;
-	while (i--) {
-		re = new RegExp("^(.{" + index[i] + "})(.)");
-		a = a.replace(re, "$1" + b);
-	}
-	return a;
-};
-/**
- * Finds all the indexes where a character appears in a string.
- *
- * @param {String} str
- * @param {String} ch
- * @returns {Array} array of indexes
- */
-StringUtil.indexesOf = function (str, ch) {
-	str = String(str);
-	ch = String(ch);
-	if (String(str).length < 1 || String(ch).length < 1) {
-		return [];
-	}
-	var idxs = [],
-	p = -1;
-	p = str.indexOf(ch, p + 1);
-	while (-1 < p) {
-		idxs.push(p);
-		p = str.indexOf(ch, p + 1);
-	}
-	return idxs;
-};
-/*
  * Copy strings an specified amount.
  *
  * @param {String} str
@@ -139,14 +139,12 @@ StringUtil.copy = function (str, copies) {
  * @returns {Object}
  */
 StringUtil.splitToObject = function (str, delimiter, propValue) {
-	var makePropValue = function () {
-		return (typeof propValue === "function") ? propValue() : propValue || 1;
-	},
-	obj = {},
-	arr = str.split(delimiter || ","),
-	i = arr.length;
+	var obj = {},
+		arr = str.split(delimiter || ","),
+		i = arr.length;
+		
 	while (i--) {
-		obj[arr[i]] = makePropValue();
+		obj[arr[i]] = (typeof propValue === "function") ? propValue() : propValue || 1;
 	}
 	return obj;
 };
