@@ -10,7 +10,7 @@ Quine-McCluskeyJS is a Javascript version of the Quine Mccluskey method for Bool
 
 In otherwords, this helps you reduce your logical expressions(boolean algebra).
 ## Version ##
-0.9.3
+0.9.5
 
 ## Browser Support ##
 Chrome 12+, IE 8+, Firefox 12+ and Opera 11+
