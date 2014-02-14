@@ -4,12 +4,11 @@
 @date Feb 6, 2014
 @example
 
-var bFn = BF.formBooleanFunctionFromBinaryArray("11-1,1-0-,01-0,-010".split(","));
+var bFn = BinaryFunction.formBooleanFunctionFromBinaryArray("11-1,1-0-,01-0,-010".split(","));
 var mts = [2,4,6,8,9,10,12,13,15];
-BF.test(mts, bFn); // returns [].
+BinaryFunction.test(mts, bFn); // returns [].
 */
 var BinaryFunction = {};
-var BF = BinaryFunction;
 BinaryFunction.getArgNameAtIndex = function (i) {
 	var length_of_alphabeth = 26,
 	charCode_a = 97,
@@ -46,9 +45,9 @@ BinaryFunction.convertArrayToHashTable = function (arr) {
 // This function should return true or false.
 // @returns {Array} returns a array errors. Max length 50
 // @example
-// BF.test([0,1], function(a,b){ return !a;}); // returns []
-// BF.test([0,1,2], function(a,b){ return !a;}); // returns [{"index":2,"expected":true,"output":false}]
-BF.test = function (minterms, fn) {
+// BinaryFunction.test([0,1], function(a,b){ return !a;}); // returns []
+// BinaryFunction.test([0,1,2], function(a,b){ return !a;}); // returns [{"index":2,"expected":true,"output":false}]
+BinaryFunction.test = function (minterms, fn) {
 	var MAX_FUNC_ARGUMENTS = 27;
 	if (!ArrayUtil.isArray(minterms) || (0 < minterms.length && isNaN(minterms[0]))) {
 		throw new Error("Must pass an array of numbers as the first argument.");
@@ -64,7 +63,7 @@ BF.test = function (minterms, fn) {
 	output,
 	failLimit = 50,
 	fails = [],
-	mtObj = BF.convertArrayToHashTable(minterms);
+	mtObj = BinaryFunction.convertArrayToHashTable(minterms);
 
 	var bFiller = [];
 	var binary;
@@ -96,7 +95,7 @@ BF.test = function (minterms, fn) {
 // - = exclude position.
 // @return {String} Sum of Product Boolean Function
 // @todo Optimize this function.
-BF.formBooleanStringFromBinary = function (names, binary) {
+BinaryFunction.formBooleanStringFromBinary = function (names, binary) {
 	var expression = "",
 	oper = "";
 	for (var i = 0, len = binary.length; i < len; i++) {
@@ -132,15 +131,15 @@ BF.formBooleanStringFromBinary = function (names, binary) {
 // - = exclude position.
 // All prime impliment strings should be of equal length.
 // return {Function} boolean function that represents the passed binary-like (Prime Impliments) values.
-BF.formBooleanFunctionFromBinaryArray = function (binarys) {
+BinaryFunction.formBooleanFunctionFromBinaryArray = function (binarys) {
 	if (!ArrayUtil.isArray(binarys) || binarys.lenght < 1) {
 		throw new Error("Must pass an non-empty array of binary strings.");
 	}
 	var source = "";
 	var pis = [];
-	var names = BF.getAllArgNames(binarys[0].length);
+	var names = BinaryFunction.getAllArgNames(binarys[0].length);
 	for (var i = 0, len = binarys.length; i < len; i++) {
-		pis.push(BF.formBooleanStringFromBinary(names, binarys[i]));
+		pis.push(BinaryFunction.formBooleanStringFromBinary(names, binarys[i]));
 	}
 	source = "return " + pis.join(" || ") + ";";
 	return new Function(names.join(", "), source);
@@ -173,10 +172,10 @@ BinaryFunction.createLoopFunctionCall = function (fnName, depth) {
  * @todo Speed up the performance.
  * @example
 
-	BF.generateMinterms("abcd".split(","), "ab + a*c") // returns [2, 3, 6, 7, 12, 13, 14, 15]
+	BinaryFunction.generateMinterms("abcd".split(","), "ab + a*c") // returns [2, 3, 6, 7, 12, 13, 14, 15]
 	
  */
-BF.generateMinterms = function (inputs, expression) {
+BinaryFunction.generateMinterms = function (inputs, expression) {
 	var minterms = [];
 	if (!inputs || !expression) {
 		return [];
@@ -184,7 +183,7 @@ BF.generateMinterms = function (inputs, expression) {
 	var terms = String(expression).replace(/\s/g, "").split(/\+/);
 	var binarys = [];
 	for(var i = 0, len = terms.length; i < len; i++){
-		binarys = binarys.concat( BF.expandBinaryTerm( BF.termToBinaryTerm(inputs, terms[i]) ) );
+		binarys = binarys.concat( BinaryFunction.expandBinaryTerm( BinaryFunction.termToBinaryTerm(inputs, terms[i]) ) );
 	}
 	// @todo Find out if the sorting is needed.
 	return ArrayUtil.getUniqueSortedNumbers( NumberUtil.binsToDecs(binarys) );
@@ -194,10 +193,10 @@ BF.generateMinterms = function (inputs, expression) {
  * @param {String} term - Boolean algebra expression
  * @example
 
-BF.termToBinaryTerm("ABCD".split(""), "ADC") === "1-11"
+BinaryFunction.termToBinaryTerm("ABCD".split(""), "ADC") === "1-11"
 
  */
-BF.termToBinaryTerm = function (inputs, term) {
+BinaryFunction.termToBinaryTerm = function (inputs, term) {
 	term = String(term);
 	var input;
 	var binaryTerm = "";
@@ -222,10 +221,10 @@ BF.termToBinaryTerm = function (inputs, term) {
  * @param {Array} inputs - Array of strings
  * @param {String} term - Boolean algebra expression
  * @example
-BF.checkForUniqueInputs("abcd".split(""), "abcd"); // no error
-BF.checkForUniqueInputs("abcd".split(""), "abcda"); // Throws an error!
+BinaryFunction.checkForUniqueInputs("abcd".split(""), "abcd"); // no error
+BinaryFunction.checkForUniqueInputs("abcd".split(""), "abcda"); // Throws an error!
  */
-BF.checkForUniqueInputs = function (inputs, term) {
+BinaryFunction.checkForUniqueInputs = function (inputs, term) {
 	term = String(term);
 	var p;
 	for (var i = 0, len = inputs.length; i < len; i++) {
@@ -238,7 +237,7 @@ BF.checkForUniqueInputs = function (inputs, term) {
 /**
 * Finds the first "-" character then splits it in positive and negative component.
 */
-BF.getBinPair = function(str){
+BinaryFunction.getBinPair = function(str){
 	str = String(str);
 	p = str.indexOf("-");
 	if (-1 < p) {
@@ -257,9 +256,9 @@ BF.getBinPair = function(str){
 * @note The amount of elements returned is the Math.pow(2, amount of "-")
 * @example
 
-	BF.expandBinaryTerm("1--1") // returns ["1001", "1011", "1101", "1111"]
+	BinaryFunction.expandBinaryTerm("1--1") // returns ["1001", "1011", "1101", "1111"]
 */
-BF.expandBinaryTerm = function (term) {
+BinaryFunction.expandBinaryTerm = function (term) {
 	if (-1 == term.indexOf("-")) {
 		return [term];
 	}
@@ -275,10 +274,9 @@ BF.expandBinaryTerm = function (term) {
 	while (-1 < String(curr_queue[0]).indexOf("-")) {
 		new_queue = [];
 		for (var i = 0, len = curr_queue.length; i < len; i++) {
-			new_queue = new_queue.concat( BF.getBinPair( curr_queue[i]));
+			new_queue = new_queue.concat( BinaryFunction.getBinPair( curr_queue[i]));
 		}
 		curr_queue = new_queue.concat();
 	}
 	return new_queue;
 };
-

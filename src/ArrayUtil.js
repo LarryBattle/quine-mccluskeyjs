@@ -2,6 +2,31 @@ var ArrayUtil = {};
 //---------
 //ArrayUtil
 //---------
+// Converts object where the values equals 1 and keys are values of the array.
+// @param {Array} arr
+// @return {Object}
+ArrayUtil.arrayToSet = function (arr) {
+	var obj = {};
+	for (var i = 0, len = arr.length; i < len; i++) {
+		obj[arr[i]] = 1;
+	}
+	return obj;
+};
+ArrayUtil.filter = function( arr, fn ){
+  if(!ArrayUtil.isArray(arr)){
+    throw new Error("arr must be an array.");
+  }
+  if(typeof fn !== "function"){
+    throw new Error("fn must be a function");
+  }
+  var out = [];
+  for(var i = 0, l = arr.length; i < l; i++){
+    if( fn(arr[i], i, arr) ){
+      out.push(arr[i]);
+    }
+  }
+  return out;
+};
 /*
  * Sorts an array of numbers.
  *
