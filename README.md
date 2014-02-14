@@ -1,5 +1,5 @@
 #Note
-Unstable.
+API is unstable but functionality should work.
 
 Try an alternative library: https://gist.github.com/ysangkok/5707171#file-smallqm-js
 
