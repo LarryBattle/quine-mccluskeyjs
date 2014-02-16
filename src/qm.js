@@ -176,6 +176,7 @@ qm.func.getMatchLenAfterAppendPIToMT = function (PIIndex, piMtStr, mtObj) {
  *
  * @param {}
  * @returns {}
+ * @throws Error if unable to find an answer.
  */
 //@todo Optimize this code
 qm.func.getLeastPrimeImplicantsByGraph = function (mtStr, PIArr) {
@@ -199,6 +200,9 @@ qm.func.getLeastPrimeImplicantsByGraph = function (mtStr, PIArr) {
 				value : p.binaryStr
 			});
 		}
+	}
+	else{
+		throw new Error("Unable to find an answer.");
 	}
 	return out;
 };

@@ -70,9 +70,12 @@ StringUtil.sharedIndexesOf = function (a, b, chr) {
 	return idxs;
 };	
 /*
- * Return a empty string if there is not exactly a one digit difference between two numbers in binary.
- * Otherwise, it return the a binary string with a marker in place of the digit difference.
+ * Return a empty string if there is not exactly one character difference between two Strings.
+ * Otherwise, it return the a string with a marker in place of the single character difference.
+ * Note: Both strings must have the same positions for the mark character.
  *
+ * @todo Rename function to better suite the note above.
+ * @todo Could rename to StringUtil.replaceOneDiffNotMarket()
  * @param {String} a
  * @param {String} b
  * @param {String} mark
@@ -156,7 +159,9 @@ StringUtil.splitToObject = function (str, delimiter, propValue) {
 * @return {Number} 
 */
 StringUtil.count = function(str, substr){
-	if(String(str).length < 1 || String(substr).length < 1){
+	str = String(str);
+	substr = String(substr);
+	if(str.length < 1 || substr.length < 1){
 		return 0;
 	}
 	var c = 0, p = -1;
