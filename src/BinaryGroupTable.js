@@ -6,7 +6,7 @@ var BinaryGroupTable = function(nums){
   return this; 
 };
 var bgtp = BinaryGroupTable.prototype;
-bgtp.solve = function(){
+bgtp.expandElements = function(){
   var els = this.numbersToSortedChartElements(this.nums);
    oneGroup, el, el2, terms, termsAsString, newBinString,
    LOOP_LIMIT = 1e5,
@@ -44,6 +44,13 @@ bgtp.solve = function(){
     }
   }
   return els;
+};
+bgtp.solve = function(){
+  var els = this.expandElements();
+  var elsUsed = ArrayUtil.filter(els, function(el){
+    return !!el.isUsed;
+  });
+  return elsUsed;
 };
 bgtp.createChartElement = function(binString, terms ){
   if(!ArrayUtil.isArray(terms)){
