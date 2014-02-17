@@ -172,57 +172,6 @@ var runTests = function () {
         deepEqual(func([0, 1, 2, 3], 5), ["00000", "00001", "00010", "00011"]);
         deepEqual(func([0, 1, 2, 2, 3, 3, 3], 5, true), ["00000", "00001", "00010", "00011"]);
     });
-    module("MintermUtil");
-    test("Testing MintermUtil.binsToGroupedMinterms()", function () {
-        var func = function (arr) {
-            return MintermUtil.binsToGroupedMinterms(NumberUtil.decsToBins(arr));
-        };
-        var obj = {
-            keys : [1],
-            1 : [{
-                    minterms : "1",
-                    value : "1"
-                }
-            ]
-        };
-        deepEqual(func([1]), obj);
-        obj = {
-            keys : [0, 1, 2, 3],
-            3 : [{
-                    minterms : "7",
-                    value : "111"
-                }
-            ],
-            2 : [{
-                    minterms : "6",
-                    value : "110"
-                }, {
-                    minterms : "5",
-                    value : "101"
-                }, {
-                    minterms : "3",
-                    value : "011"
-                }
-            ],
-            1 : [{
-                    minterms : "4",
-                    value : "100"
-                }, {
-                    minterms : "2",
-                    value : "010"
-                }, {
-                    minterms : "1",
-                    value : "001"
-                }
-            ],
-            0 : [{
-                    minterms : "0",
-                    value : "000"
-                }
-            ]
-        };
-        deepEqual(func([0, 1, 2, 3, 4, 5, 6, 7]), obj);
-    });
     module("CoverageTable");
     test("Testing CoverageTable", function(){
       var o = new CoverageTable();
@@ -275,62 +224,9 @@ var runTests = function () {
         };
         equal(func(obj), "");
     });
-    test("Testing qm.func.getGroupedMTFromNumArr()", function () {
-        var func = qm.func.getGroupedMTFromNumArr;
-        var obj = {
-            keys : [1],
-            1 : [{
-                    minterms : "1",
-                    value : "1"
-                }
-            ]
-        };
-        deepEqual(func([1]), obj);
-		obj = {
-			"1" : [{
-					"minterms" : "4",
-					"value" : "0100"
-				}, {
-					"minterms" : "2",
-					"value" : "0010"
-				}, {
-					"minterms" : "1",
-					"value" : "0001"
-				}
-			],
-			"2" : [{
-					"minterms" : "12",
-					"value" : "1100"
-				}, {
-					"minterms" : "6",
-					"value" : "0110"
-				}, {
-					"minterms" : "5",
-					"value" : "0101"
-				}
-			],
-			"3" : [{
-					"minterms" : "7",
-					"value" : "0111"
-				}
-			],
-			"4" : [{
-					"minterms" : "15",
-					"value" : "1111"
-				}
-			],
-			"keys" : [
-				1,
-				2,
-				3,
-				4
-			]
-		};
-		deepEqual( func("1,2,4,5,6,7,12,15".split(","), "A,B,C,D".split(",").length), obj);
-    });
     test("Testing qm.func.getPrimeImplicantsFromMinterms()", function () {
         var func = function (arr) {
-            return qm.func.getPrimeImplicantsFromMinterms(qm.func.getGroupedMTFromNumArr(arr));
+            return qm.func.getPrimeImplicantsFromMinterms(arr);
         };
         var arr;
         arr = [{
@@ -471,6 +367,24 @@ var runTests = function () {
 		var a = qm.getLeastPrimeImplicants(userInput);
 		equal(a, "AC* + ABD + B*CD* + A*BD*");
 	});
+    test("Testing petrick.expandTerms with simple input", function(){
+      var fn = petrick.expandTerms;
+      deepEqual(fn([ ]), [ ]);
+      deepEqual(fn([[ 1 ]]), [[ 1 ]]);
+      deepEqual(fn([[1, 2]]), [[1,2]]);
+      deepEqual(fn([[1], [2]]), [[1,2]]);
+      deepEqual(fn([[1], [2,3]]), [[1,2],[1,3]]);
+      deepEqual(fn([[1,3]], [2]]), [[1,2],[1,3]]);
+    });
+    test("Testing petrick.expandTerms() with complex input", function(){
+      var fn = petrick.expandTerms;
+      deepEqual(fn([[1,2], [3,4]]), [[1,3],[1,4],[2,3],[2,4]]);
+      deepEqual(fn([[1,2,3], [4,5,6]]), [[1,4 ], [1,5 ],[1,6 ],[2,4 ],[2,5 ],[2,6 ],[3,4 ],[3,5 ],[3,6 ] ] );
+      deepEqual(fn([[1], [3,4],[5,6]]), [ [1,3,5],[1,3,6],[1,4,5],[1,4,6] ]);
+      deepEqual(fn([[1,2], [3,4],[1,3],[5,6],[2,5],[4,6]]), [
+	[1,4,5],[1,3,5,6],[2,3,4,5],[2,3,5,6 ],[1,2,4,6 ],[1,2,3,6 ],[2,3,4,6 ],[2,3,6 ]
+      ]);
+    });
     // test( "", function(){
     // });
 };

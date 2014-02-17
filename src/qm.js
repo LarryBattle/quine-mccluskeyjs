@@ -63,8 +63,15 @@ qm.func.checkInputThenStart = function (obj) {
  * @returns {}
  */
 // getPrimeImplicantsFromMinterms(): mintermsObj is the return object from getGroupedMintermsFromBinStrArr().
-qm.func.getPrimeImplicantsFromMinterms = function (mintermsObj) {
-  var o = new BinaryGroupTable(mintermsObj);
+qm.func.getPrimeImplicantsFromMinterms = function (nums) {
+  var o = new BinaryGroupTable(nums);
+  var out = ArrayUtil.map( o.solve(), function(obj){
+    return {
+      minterms : obj.terms,
+      value : obj.binString
+    };
+  });
+  return out;
 };
 /*
  *

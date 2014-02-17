@@ -31,6 +31,19 @@ ArrayUtil.compareSets = function(a,b){
   }
   return x;
 };
+ArrayUtil.map = function(arr, fn){
+  if(!ArrayUtil.isArray(arr)){
+    throw new Error("arr must be an array.");
+  }
+  if(typeof fn !== "function"){
+    throw new Error("fn must be a function");
+  }
+  var out = [];
+  for(var i = 0, l = arr.length; i < l; i++){
+    out.push(fn(arr[i], i, arr));
+  }
+  return out;
+};
 ArrayUtil.filter = function( arr, fn ){
   if(!ArrayUtil.isArray(arr)){
     throw new Error("arr must be an array.");

@@ -2,12 +2,15 @@
 // require("NumberUtil");
 // require("StringUtil");
 var BinaryGroupTable = function(nums){
+  if(!ArrayUtil.isArray(nums) ||  (0 < nums.length && isNaN(nums[0]))){
+    throw new Error("Must pass an array of numbers");
+  }
   this.nums = nums;
   return this; 
 };
 var bgtp = BinaryGroupTable.prototype;
 bgtp.expandElements = function(){
-  var els = this.numbersToSortedChartElements(this.nums);
+  var els = this.numbersToSortedChartElements(this.nums),
    oneGroup, el, el2, terms, termsAsString, newBinString,
    LOOP_LIMIT = 1e5,
    count = 0,
@@ -80,29 +83,3 @@ BinaryGroupTable.sortBinaryStringsFunc = function(a,b){
 bgtp.numbersToSortedChartElements = function(nums){
   return this.numbersToChartElements(nums).sort(BinaryGroupTable.sortBinaryStringsFunc);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
