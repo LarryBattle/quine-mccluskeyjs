@@ -1,0 +1,31 @@
+{
+  "name": "quine-mccluskeyjs",
+  "version": "0.9.5",
+  "description": "Boolean Algebra Reduction",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha ./test/mocha-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LarryBattle/quine-mccluskeyjs.git"
+  },
+  "keywords": [
+    "boolean",
+    "algebra"
+  ],
+  "author": "Larry Battle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LarryBattle/quine-mccluskeyjs/issues"
+  },
+  "homepage": "https://github.com/LarryBattle/quine-mccluskeyjs",
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0"
+  }
+}
