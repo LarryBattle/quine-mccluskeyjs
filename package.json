@@ -26,6 +26,10 @@
   "homepage": "https://github.com/LarryBattle/quine-mccluskeyjs",
   "devDependencies": {
     "mocha": "~1.17.1",
-    "chai": "~1.9.0"
+    "chai": "~1.9.0",
+    "jshint": "~2.4.3",
+    "gulp": "~3.5.2",
+    "gulp-concat": "~2.1.7",
+    "gulp-uglify": "~0.2.1"
   }
 }
