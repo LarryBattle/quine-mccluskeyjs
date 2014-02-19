@@ -108,14 +108,14 @@ qm.func.getLeastPrimeImplicantsByGraph = function (mtStr, PIArr) {
 	var i, l, p, x;
 	var out = [];
 	var o = new CoverageTable();
-	
-	o.setMinterms(minterms);
+
+  o.setMinterms(minterms);
 	for(i = 0, l = PIArr.length; i < l; i++){
 		p = PIArr[i];
-		o.addPrimeImp( p.value, p.minterms.split(",") );	
+		o.addPrimeImp( p.value, p.minterms );
 	}
-	o.solve();
-	if(o.foundAnswer()){	
+  o.solve();
+	if(o.foundAnswer()){
 		x = o.getActivePrimeImps();
 		for(i = 0, l = x.length; i < l; i++){
 			p = x[i];
@@ -188,4 +188,19 @@ qm.getLeastPrimeImplicants = function (obj, outputType) {
 	var index = types[type];
 	return qm.func.getLeastPI(obj)[index].join(" + ");
 };
-
+/**
+*
+*
+*/
+qm.simplify = function(inputs, expression){
+  if(!ArrayUtil.isArray(inputs)){
+    throw new Error("inputs must be an array of strings");
+  }
+  if(typeof expression !== "string" ){
+    throw new Error("The expression must be a string");
+  }
+  var o = {};
+  o.inputs = inputs.join(",");
+  o.minterms = BinaryFunction.generateMinterms(inputs, expression).join(",");
+  return qm.getLeastPrimeImplicants(o);
+};

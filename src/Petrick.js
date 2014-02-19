@@ -1,3 +1,4 @@
+// require("ArrayUtil")
 var petrick = {};
 petrick.foilTerm = function(arrs, els){
   var out = [];
@@ -19,6 +20,9 @@ petrick.expandTerms = function(arrs){
   var out = [arrs[0]], arr, tmp, c;
   for(var i = 1, l = arrs.length; i < l; i++){
     out = petrick.foilTerm(out, arrs[i]);
+  }
+  for(var i = 0, l = out.length; i < l; i++){
+    out[i] = ArrayUtil.getUniqueSortedNumbers(out[i]);
   }
   return out;
 };

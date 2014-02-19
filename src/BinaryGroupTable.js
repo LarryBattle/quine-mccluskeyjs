@@ -6,7 +6,7 @@ var BinaryGroupTable = function(nums){
     throw new Error("Must pass an array of numbers");
   }
   this.nums = nums;
-  return this; 
+  return this;
 };
 var bgtp = BinaryGroupTable.prototype;
 bgtp.expandElements = function(){
@@ -51,7 +51,7 @@ bgtp.expandElements = function(){
 bgtp.solve = function(){
   var els = this.expandElements();
   var elsUsed = ArrayUtil.filter(els, function(el){
-    return !!el.isUsed;
+    return !el.isUsed;
   });
   return elsUsed;
 };
@@ -63,7 +63,7 @@ bgtp.createChartElement = function(binString, terms ){
     binString : String(binString),
     isUsed : false,
     terms : terms,
-    amountOf1s : StringUtil.count(binString, "1") 
+    amountOf1s : StringUtil.count(binString, "1")
   };
 };
 bgtp.numbersToChartElements = function(nums){

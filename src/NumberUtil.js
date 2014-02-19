@@ -44,7 +44,7 @@ NumberUtil.decsToBins = function (decs, len, makeArrUnique) {
  * @returns {String}
  */
 NumberUtil.decToBin = function (dec, length) {
-	var binary = dec.toString(2);
+	var binary = Number(dec).toString(2);
 	length = length || binary.length;
 	if (binary.length < length) {
 		binary = StringUtil.copy("0", (length - binary.length)) + binary;
