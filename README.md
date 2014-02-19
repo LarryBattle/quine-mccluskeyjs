@@ -32,9 +32,7 @@ Easy Way Example:
 - Bug: Create documentation
 - Bug: Add code documentation
 - Bug: Finish Petrick.js for the petrick method
-
 - Feature: Create homepage
-
 - Enhancement: Get code reviewed
 - Enhancement: Wrap everything inside one global variable.
 - Enhancement: Link to resource material about the Quine McCluskey method
