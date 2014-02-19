@@ -23,15 +23,19 @@ Easy Way Example:
     qm.simplify(inputs, expression ) === "A + B*"
 
 ## Version 1.0.0 Roadmap ##
-- Rewrite API to make it easier.
-- Add more edge condition test cases.
-- Add test cases to get to 90%+ code coverage
-- Create documentation
-- Update build script
-- Create homepage
-- Handle cycles
-- Finish Petrick.js for the petrick method
-- Get code reviewed
-- Add code documentation
-- Link to resource material about the Quine McCluskey method
-- Add TravisCI support for build automation
+
+- Bug: Add more edge condition test cases.
+- Bug: Add test cases to get to 90%+ code coverage
+- Bug: For CoverageTable.js, write code to handle cycles
+- Bug: Simplify the overall API for https://github.com/LarryBattle/quine-mccluskeyjs/issues/11
+- Bug: Update the build script for https://github.com/LarryBattle/quine-mccluskeyjs/issues/8
+- Bug: Create documentation
+- Bug: Add code documentation
+- Bug: Finish Petrick.js for the petrick method
+
+- Feature: Create homepage
+
+- Enhancement: Get code reviewed
+- Enhancement: Wrap everything inside one global variable.
+- Enhancement: Link to resource material about the Quine McCluskey method
+- Enhancement: Add TravisCI support for build automation
