@@ -31,6 +31,44 @@ ArrayUtil.compareSets = function(a,b){
   }
   return x;
 };
+ArrayUtil.is2dArray = function(arrs){
+	return ArrayUtil.isArray(arrs) && ArrayUtil.isArray(arrs[0]);
+};
+/**
+* Returns the unique elements in an 2d array.
+* @param {Array} - 2d Array of primitive values.
+* @return {Array} - unique elements
+*/
+ArrayUtil.getUniqueElementsIn2dArray = function(arrs){
+	if(!ArrayUtil.isArray(arrs) || (0 < arrs.length && !ArrayUtil.isArray(arrs[0]) )){
+		throw new Error("Must pass an 2d array.");
+	}
+	if(arrs.length < 1){
+		return [];
+	}
+	var h = {}, arr, el, out = [];
+	for(var i = 0, l = arrs.length; i < l; i++){
+		arr = arrs[i];
+		for(var i2 = 0, l2 = arr.length; i2 < l2; i2++){
+			if( !h[arr[i2]] ){
+				h[arr[i2]] = {
+					count: 0,
+					value : arr[i2]
+				};
+			}
+			h[arr[i2]].count++;
+		}
+	}
+	for(el in h){
+		if(!h.hasOwnProperty(el)){
+			continue;
+		}
+		if(h[el] && h[el].count === 1){
+			out.push(h[el].value);
+		}
+	}
+	return out;
+};
 ArrayUtil.map = function(arr, fn){
   if(!ArrayUtil.isArray(arr)){
     throw new Error("arr must be an array.");
