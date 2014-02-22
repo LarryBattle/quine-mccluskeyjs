@@ -5,6 +5,61 @@ if (!chai) {
 var assert = chai.assert;
 
 describe("ArrayUtil", function () {
+	describe("#is2dArray()", function () {
+		var fn = ArrayUtil.is2dArray;
+		it("should return false when not given an 2d array", function(){
+			assert.equal(fn(), false);
+			assert.equal(fn([]), false);
+			assert.equal(fn([1,2,3]), false);
+			assert.equal(fn(true), false);
+			assert.equal(fn(function(){}), false);
+			assert.equal(fn({}), false);
+		});
+		it("should return true when given an 2d array", function(){
+			assert.equal(fn([[]]), true);
+			assert.equal(fn([[1,2,3]]), true);
+			assert.equal(fn([[0,1,2,3], [1,2]]), true);
+			assert.equal(fn([[null]]), true);
+		});
+	});
+	describe("#getUniqueElementsIn2dArray()", function () {
+		var fn = ArrayUtil.getUniqueElementsIn2dArray;
+		it("should return throw an error if an array of array list isn't passed.", function () {
+			assert.throws(function () {
+				fn("ok");
+			});
+			assert.throws(function () {
+				fn([0]);
+			});
+			assert.throws(function () {
+				fn(["ok"]);
+			});
+			assert.throws(function () {
+				fn(false);
+			});
+			assert.throws(function () {
+				fn(function () {});
+			});
+		});
+		it("should return an empty array when an empty array is passed.", function () {
+			assert.deepEqual(fn([]), []);
+		});
+		it("should return an empty array when there are no unique elements within the 2d array.", function () {
+			assert.deepEqual(fn([[1,2,3],[1,2,3]]), []);
+			assert.deepEqual(fn([[1],[1,2,3],[2,3,4],[4,6,6]]), []);
+			assert.deepEqual(fn([[1,1],[2,2,4],[3,3],[4]]), []);
+		});
+		it("should return the unique element inside an 2d array with only one unique element.", function(){
+			assert.deepEqual(fn([[1]]), [1]);
+			assert.deepEqual(fn([[1,2,3],[1,3]]), [2]);
+			assert.deepEqual(fn([["dog", "cat", "duck"],["dog", "cat"]]), ["duck"]);
+		});
+		it("should return the unique elements inside an 2d array with a few unique elements.", function(){
+			assert.deepEqual(fn([[1],[2]]), [1,2]);
+			assert.deepEqual(fn([[1,2,3],[1,3,4]]), [2,4]);
+			assert.deepEqual(fn([[1,2,3],[1,2,3,4],[1,2,5],[1,6],[7]]), [4,5,6,7]);
+		});
+	});
 	describe("#insertionSort()", function () {
 		var func = ArrayUtil.insertionSort;
 		it("should return an empty array when passed an empty array", function () {
