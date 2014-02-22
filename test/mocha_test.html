@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Project tests</title>
+  <title>Quine-McCluskey.js Test Cases</title>
     <link rel="stylesheet" media="all" href="../vendor/mocha/mocha.css">
 </head>
 <body>
-  <div id="mocha"><p><a href=".">Index</a></p></div>
+  <div id="mocha"><p><a href="./mocha-test.html">All Tests</a></p></div>
   <div id="messages"></div>
   <div id="fixtures"></div>
   <!--Loading test libraries -->
@@ -20,11 +20,19 @@
 	<script src="../src/CoverageTable.js"></script>
 	<script src="../src/BinaryGroupTable.js"></script>
 	<script src="../src/Petrick.js"></script>
+	<script src="../src/SimpleSet.js"></script>
 	<script src="../src/qm.js"></script>
   <script>mocha.setup('bdd')</script>
   <!--Loading project test files -->
-	<script src="ArrayUtil-test.js"></script>
-	<script src="StringUtil-test.js"></script>
+	<script src="js/ArrayUtil-test.js"></script>
+	<script src="js/StringUtil-test.js"></script>
+	<script src="js/NumberUtil-test.js"></script>
+	<script src="js/BinaryFunction-test.js"></script>
+	<script src="js/CoverageTable-test.js"></script>
+	<script src="js/BinaryGroupTable-test.js"></script>
+	<script src="js/Petrick-test.js"></script>
+	<script src="js/SimpleSet-test.js"></script>
+	<script src="js/qm-test.js"></script>
   <script>mocha.run();</script>
 </body>
 </html>
