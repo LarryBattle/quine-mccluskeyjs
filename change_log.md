@@ -1,8 +1,7 @@
-@Project Quine-mccluskeyjs
-@Version: 0.9.3
-@Date: 07/1/12
-
 ## Release notes ## 
+
+@Version: 0.9.6 beta
+- Bug Fix: qm.simplify() breaks for some input #12
 
 @Version: 0.9.3
 *Unstable*
