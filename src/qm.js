@@ -1,23 +1,18 @@
-;/*
+/*
  * Quine-McCluskeyJS
  *
- * @purpose: The Quine McCluskey Algorithm translated into Javascript.
- * In otherwords, this helps you reduce your expressions and boolean algebra.
+ * @purpose: The Quine McCluskey Algorithm translated into JavaScript.
+ * In other words, this helps you reduce your expressions and boolean algebra.
  * @author Larry Battle <http://bateru.com/news/contact-me>
  * @license MIT and GPL 3.0
  * http://www.gnu.org/licenses/gpl.html, http://www.opensource.org/licenses/mit-license.php
  */
-// requires("ArrayUtil")
-// requires("NumberUtil")
-// requires("StringUtil")
-// requires("MintermUtil")
-// requires("CoverageTable");
 var qm = {
-		VERSION : "0.9.5",
+		VERSION : "0.9.6 beta",
 		func : {}
 	};
 /*
- * Returns a error message if the provided object doesn't fillfull the requirements.
+ * Returns a error message if the provided object doesn't fulfilled the requirements.
  *
  * @param {Object} obj
  * @returns {String}
@@ -30,10 +25,10 @@ qm.func.checkFormatOfUserInput = function (obj) {
 		return (typeof obj.dontNeeds !== "string" || typeof obj.minterms !== "string" || typeof obj.inputs !== "string") ? "\nInput, minterms and dontNeeds properties must be a string." : "";
 	},
 	doPropsHaveProperFormat = function (obj) {
-		return (/[^\d,]/.test(obj.minterms) || (obj.dontNeeds.length && /[^\d,]/.test(obj.dontNeeds))) ? "The minterms property must be a string of numbers seperated by colums." : "";
+		return (/[^\d,]/.test(obj.minterms) || (obj.dontNeeds.length && /[^\d,]/.test(obj.dontNeeds))) ? "The minterms property must be a string of numbers separated by columns." : "";
 	},
 	areMintermsOrdontNeedsTooBig = function (obj) {
-		var errMsg = "\nNeed more input variables to satify: max value in midterm or dontNeeds < 2^(number of input variables).",
+		var errMsg = "\nNeed more input variables to satisfy: max value in midterm or dontNeeds < 2^(number of input variables).",
 		numStr = obj.dontNeeds + "," + obj.minterms,
 		maxNum = Math.max.apply(Math, numStr.split(",")),
 		inputLength = (obj.inputs.split(",")).length;
@@ -63,8 +58,8 @@ qm.func.checkInputThenStart = function (obj) {
  * @returns {}
  */
 // getPrimeImplicantsFromMinterms(): mintermsObj is the return object from getGroupedMintermsFromBinStrArr().
-qm.func.getPrimeImplicantsFromMinterms = function (nums) {
-  var o = new BinaryGroupTable(nums);
+qm.func.getPrimeImplicantsFromMinterms = function (nums, inputLength) {
+  var o = new BinaryGroupTable(nums, inputLength);
   var out = ArrayUtil.map( o.solve(), function(obj){
     return {
       minterms : obj.terms,
@@ -170,7 +165,7 @@ qm.func.getLeastPI = function (obj) {
 	step2,
 	allMinterms = (obj.dontNeeds) ? (obj.minterms + "," + obj.dontNeeds) : obj.minterms;
 
-	step1 = qm.func.getPrimeImplicantsFromMinterms(allMinterms.split(","));
+	step1 = qm.func.getPrimeImplicantsFromMinterms(allMinterms.split(","), obj.inputs.split(",").length);
 	step2 = qm.func.getLeastPrimeImplicantsByGraph(obj.minterms, step1);
 	return qm.func.convertLeastPIToAlgebra(obj.inputs, step2);
 };
