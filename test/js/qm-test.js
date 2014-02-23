@@ -1,7 +1,7 @@
 describe("qm", function () {
 	describe("#func.checkFormatOfUserInput()", function () {
 		var func = qm.func.checkFormatOfUserInput;
-		it("should .", function () {
+		it("should ?", function () {
 			var obj = {
 				inputs : "A,B,C,D,E",
 				minterms : "5,7,11,12,27,29",
@@ -11,10 +11,10 @@ describe("qm", function () {
 		});
 	});
 	describe("#func.getPrimeImplicantsFromMinterms()", function () {
-		var func = function (arr) {
-			return qm.func.getPrimeImplicantsFromMinterms(arr);
+		var func = function (arr, binaryLength) {
+			return qm.func.getPrimeImplicantsFromMinterms(arr, binaryLength);
 		};
-		it("should .", function () {
+		it("should ?", function () {
 			var arr = [{
 					"minterms" : [0, 1],
 					"value" : "00-"
@@ -23,9 +23,9 @@ describe("qm", function () {
 					"value" : "-00"
 				}
 			];
-			assert.deepEqual(func([0, 1, 4]), arr);
+			assert.deepEqual(func([0, 1, 4], 3), arr);
 		});
-		it("should .", function () {
+		it("should ?", function () {
 			var arr = [{
 					minterms : [12, 14],
 					value : "011-0"
@@ -44,12 +44,12 @@ describe("qm", function () {
 				}
 			];
 
-			assert.deepEqual(func([5, 7, 21, 23, 20, 21, 22, 12, 14, 21, 29, 11, 27]), arr);
+			assert.deepEqual(func([5, 7, 21, 23, 20, 21, 22, 12, 14, 21, 29, 11, 27], 5), arr);
 		});
 	});
 
 	describe("#func.getMatchLenAfterAppendPIToMT()", function () {
-		it("should .", function () {
+		it("should ?", function () {
 			var mtObj = StringUtil.splitToObject("1,2,3,4", ",", (function () {
 						return {
 							"PIs" : [],
@@ -60,14 +60,19 @@ describe("qm", function () {
 			assert.deepEqual([0], mtObj[4].PIs);
 		});
 	});
-	describe("#func.getLeastPrimeImplicantsByGraph() with short input", function () {
+	describe("#func.getLeastPrimeImplicantsByGraph()", function () {
 		var func = qm.func.getLeastPrimeImplicantsByGraph;
-		var func2 = function (arr) {
-			return qm.func.getPrimeImplicantsFromMinterms(arr);
+		var func2 = function (arr, binaryLength) {
+			return qm.func.getPrimeImplicantsFromMinterms(arr, binaryLength);
 		};
-		it("should .", function () {
+		var sortOldPrimeImpsFunc = function (x, y) {
+			var a = String(x.minterms);
+			var b = String(y.minterms);
+			return a.localeCompare(b);
+		};
+		it("should return two prime implicants when supplied with 0,1,4 as minterms.", function () {
 			var mtStr2 = "0,1,4";
-			var PITest2 = func2(mtStr2.split(","));
+			var PITest2 = func2(mtStr2.split(","), 3);
 			var arr = [{
 					minterms : "0,1",
 					value : "00-"
@@ -78,20 +83,9 @@ describe("qm", function () {
 			];
 			assert.deepEqual(func(mtStr2, PITest2), arr);
 		});
-	});
-	describe("#func.getLeastPrimeImplicantsByGraph() with long input", function () {
-		var sortOldPrimeImpsFunc = function (x, y) {
-			var a = String(x.minterms);
-			var b = String(y.minterms);
-			return a.localeCompare(b);
-		};
-		var func = qm.func.getLeastPrimeImplicantsByGraph;
-		var func2 = function (arr) {
-			return qm.func.getPrimeImplicantsFromMinterms(arr);
-		};
-		it("should .", function () {
+		it("should return five prime implicants when supplied with 5,7,11,12,14,20,21,22,23,27,29 as minterms.", function () {
 			var mtStr2 = "5,7,11,12,14,20,21,22,23,27,29";
-			var PITest = func2(mtStr2.split(","));
+			var PITest = func2(mtStr2.split(","), 5);
 			var arr = [{
 					minterms : "5,7,21,23",
 					value : "-01-1"
@@ -112,9 +106,9 @@ describe("qm", function () {
 			assert.deepEqual(func(mtStr2, PITest).sort(sortOldPrimeImpsFunc), arr.sort(sortOldPrimeImpsFunc));
 		});
 	});
-	describe("#func.getLeastPI() without dontNeeds input", function () {
+	describe("#func.getLeastPI()", function () {
 		var func = qm.func.getLeastPI;
-		it("should . ", function () {
+		it("should return 5 elements of a boolean algebra and binary expressions when ABCD are inputs and 2,4,6,8,9,10,12,13,15 are minterms.", function () {
 			var input = {
 				inputs : "A,B,C,D",
 				minterms : "2,4,6,8,9,10,12,13,15"
@@ -135,10 +129,7 @@ describe("qm", function () {
 			};
 			assert.deepEqual(func(input), obj);
 		});
-	});
-	describe("#func.getLeastPI() with dontNeeds input", function () {
-		var func = qm.func.getLeastPI;
-		it("should .", function () {
+		it("should return 6 elements of a boolean algebra and binary expressions when ABCDE are inputs and 2,3,7,10,12,15,27 are minterms and 5,18,19,21,23 as the don't needs.", function () {
 			var input = {
 				dontNeeds : "5,18,19,21,23",
 				inputs : "A,B,C,D,E",
@@ -165,13 +156,27 @@ describe("qm", function () {
 	});
 	describe("#getLeastPrimeImplicants()", function () {
 		var fn = qm.getLeastPrimeImplicants;
-		it("should . ", function(){
-		var userInput = {
-			inputs : "A,B,C,D",
-			minterms : "2,4,6,8,9,10,12,13,15"
-		};
-		var a = fn(userInput);
-		assert.equal(a, "AC* + ABD + A*BD* + B*CD*");
+		it("should return the boolean expression 'AC* + ABD + A*BD* + B*CD*' when the inputs are ABCD and minterms are 2,4,6,8,9,10,12,13,15.", function () {
+			var userInput = {
+				inputs : "A,B,C,D",
+				minterms : "2,4,6,8,9,10,12,13,15"
+			};
+			var a = fn(userInput);
+			assert.equal(a, "AC* + ABD + A*BD* + B*CD*");
+		});
+	});
+	describe("#simplify()", function () {
+		var fn = qm.simplify;
+
+		it("should return the same expression when the expression contains a single term of one input from one input.", function () {
+			assert.equal(fn("A".split(","), "A"), "A");
+			assert.equal(fn("A".split(","), "A*"), "A*");
+		});
+		it("should return the same expression when expression contains a single term of one input from multiple inputs.", function () {
+			assert.equal(fn("A,B".split(","), "A"), "A");
+			assert.equal(fn("A,B".split(","), "A*"), "A*");
+			assert.equal(fn("A,B".split(","), "B"), "B");
+			assert.equal(fn("A,B".split(","), "B*"), "B*");
 		});
 	});
 });
