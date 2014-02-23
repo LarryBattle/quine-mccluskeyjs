@@ -1,8 +1,4 @@
 // Test cases for ArrayUtil
-if (!chai) {
-	var chai = this.require("chai");
-}
-var assert = chai.assert;
 
 describe("ArrayUtil", function () {
 	describe("#is2dArray()", function () {

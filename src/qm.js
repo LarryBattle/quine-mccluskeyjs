@@ -1,4 +1,4 @@
-/*
+;/*
  * Quine-McCluskeyJS
  *
  * @purpose: The Quine McCluskey Algorithm translated into Javascript.

@@ -1,9 +1,4 @@
 // StringUtil Testcases
-if (!chai && this.require) {
-	var chai = this.require("chai");
-}
-var assert = chai.assert;
-
 describe("StringUtil", function () {
 	describe("#splitToObject()", function () {
 		var func = StringUtil.splitToObject;
