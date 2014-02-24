@@ -165,6 +165,14 @@ describe("qm", function () {
 			assert.equal(a, "AC* + ABD + A*BD* + B*CD*");
 		});
 	});
+	describe("#func.convertLeastPIToAlgebra()", function(){
+		var fn = qm.func.convertLeastPIToAlgebra;
+
+		it("should return true and a value containing only markers when the boolean expression is a constant true value.", function(){
+			assert.deepEqual(fn("A",[{value:"-"}]), [true, "-"]);
+			assert.deepEqual(fn("A,B,C",[{value:"---"}]), [true, "---"]);
+		})
+	});
 	describe("#simplify()", function () {
 		var fn = qm.simplify;
 
