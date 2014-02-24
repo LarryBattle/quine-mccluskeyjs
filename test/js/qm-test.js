@@ -169,13 +169,18 @@ describe("qm", function () {
 		var fn = qm.func.convertLeastPIToAlgebra;
 
 		it("should return true and a value containing only markers when the boolean expression is a constant true value.", function(){
-			assert.deepEqual(fn("A",[{value:"-"}]), [true, "-"]);
-			assert.deepEqual(fn("A,B,C",[{value:"---"}]), [true, "---"]);
+			assert.deepEqual(fn("A",[{value:"-"}]), [[true], ["-"]]);
+			assert.deepEqual(fn("A,B,C",[{value:"---"}]), [[true], ["---"]]);
 		})
 	});
 	describe("#simplify()", function () {
 		var fn = qm.simplify;
 
+		it("should throw an error if term has two of the same literals.", function(){
+			assert.throws(function(){fn("A".split(","), "AA*")});
+			assert.throws(function(){fn("A,B,C".split(","), "AA*")});
+			assert.throws(function(){fn("A,B,C".split(","), "ABCA*")});
+		});
 		it("should return the same expression when the expression contains a single term of one input from one input.", function () {
 			assert.equal(fn("A".split(","), "A"), "A");
 			assert.equal(fn("A".split(","), "A*"), "A*");
@@ -185,6 +190,10 @@ describe("qm", function () {
 			assert.equal(fn("A,B".split(","), "A*"), "A*");
 			assert.equal(fn("A,B".split(","), "B"), "B");
 			assert.equal(fn("A,B".split(","), "B*"), "B*");
+		});
+		it("should return true when the boolean expression is a constant true value.", function(){
+			assert.equal(fn("A".split(","), "A + A*"), "true");
+			assert.equal(fn("A,B,C".split(","), "A + A*"), "true");
 		});
 	});
 });

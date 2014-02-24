@@ -132,7 +132,7 @@ qm.func.getLeastPrimeImplicantsByGraph = function (mtStr, PIArr) {
  */
 qm.func.convertLeastPIToAlgebra = function (input, PIArr) {
 	if( PIArr.length === 1 && /^-+$/.test( PIArr[0].value ) ){
-		return [ true, PIArr[0].value ];
+		return [ [true], [PIArr[0].value] ];
 	}
 	var i = PIArr.length,
 	inputArr = input.split(","),
