@@ -11,7 +11,9 @@
   <div id="fixtures"></div>
   <!--Loading test libraries -->
     <script src="../vendor/mocha/mocha.js"></script>
-    <script src="../vendor/chai/chai.js"></script>
+	<script>mocha.setup('bdd')</script>
+    <script src="../vendor/expect/expect.js"></script>
+	<script src="expectToChai.js"></script>
   <!--Loading project files -->
    	<script src="../src/ArrayUtil.js"></script>
 	<script src="../src/StringUtil.js"></script>
@@ -22,8 +24,6 @@
 	<script src="../src/Petrick.js"></script>
 	<script src="../src/SimpleSet.js"></script>
 	<script src="../src/qm.js"></script>
-  <script>var assert = chai.assert;</script>
-  <script>mocha.setup('bdd')</script>
   <!--Loading project test files -->
 	<script src="js/ArrayUtil-test.js"></script>
 	<script src="js/StringUtil-test.js"></script>
