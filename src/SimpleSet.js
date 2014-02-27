@@ -4,7 +4,7 @@ var SimpleSet = function(){
 	this.indexTable = {};
 };
 SimpleSet.prototype.hasElement = function(el){
-	return el in this.indexTable[el];
+	return el in this.indexTable;
 };
 SimpleSet.prototype.size = function(){
 	return this.arr.length;
