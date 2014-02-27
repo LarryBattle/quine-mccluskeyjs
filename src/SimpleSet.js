@@ -4,7 +4,7 @@ var SimpleSet = function(){
 	this.indexTable = {};
 };
 SimpleSet.prototype.hasElement = function(el){
-	return typeof this.indexTable[el] !== "undefined";
+	return el in this.indexTable[el];
 };
 SimpleSet.prototype.size = function(){
 	return this.arr.length;
