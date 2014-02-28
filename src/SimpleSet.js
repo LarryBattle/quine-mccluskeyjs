@@ -9,6 +9,9 @@ SimpleSet.prototype.hasElement = function(el){
 SimpleSet.prototype.size = function(){
 	return this.arr.length;
 };
+SimpleSet.prototype.toString = function(delimiter, sortFn){
+	return this.toArray().sort(sortFn).join(delimiter || ",");
+};
 SimpleSet.prototype.addElement = function(el){
 	if(typeof this.indexTable[el] === "undefined"){
 		this.indexTable[el] = this.arr.length;
