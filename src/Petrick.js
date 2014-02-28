@@ -2,21 +2,41 @@
 var Petrick = function(){
 	this.poss = [];
 };
-Petrick.expandPOS = function(arrs){
-	if(!ArrayUtil.isArray(arrs)){
-		throw new Error("Both inputs must be an array.");
+Petrick.expandPOS = function(groups){
+	if(!ArrayUtil.isArray(groups)){
+		throw new Error("Input must be an 3 dimensional array.");
 	}
-	if(arrs.length < 1){
-		return []
+	if(groups.length < 1){
+		return [];
 	}
-	var el, out = [ arrs[0] ];
-	for( var i = 1, l = arrs.length; i < l; i++){
-		el = arrs[i];
-		for( var i = 1, l = arrs.length; i < l; i++){
-			out = Petrick.expandTermIntoGroup( el, out );
+	if(!ArrayUtil.isArray(groups[0])){
+		throw new Error("Input must be an 3d array. Each group needs to be an 2d array.");
+	}
+	if(!ArrayUtil.isArray(groups[0][0])){
+		throw new Error("Input must be an 3d array. Each term inside a group needs to be an array.");
+	}
+	// groups = (p1 + p2)(p1 + p3)(p3 + p4 + p5)
+	// set nG = groups.pop() //(p3 + p4 + p5)
+	// for each cGroup in groups //[ (p1 + p2), (p1 + p3)]
+	// -- set tmp_nG as an empty set
+	// -- for each nGTerm in nG //(p3 or p4 or p5)
+	// ---- set x as the expansion of nGTerm into cGroup //(p3 or p4 or p5) in (p1 + p2)
+	// ---- add x to tmp_nG
+	// -- set nG as tmp_nG
+	// return nG
+	// (p1 + p3)(p3 + p4 + p5)
+	var nG = groups.pop();
+	for( var i = 0, l = groups.length; i < l; i++){
+		var group = groups[i];
+		var tmpNG = [];
+		for( var i2 = 0, l2 = nG.length; i2 < l2; i2++){
+			var nGTerm = nG[i2];
+			var x = Petrick.expandTermIntoGroup( nGTerm, group );
+			tmpNG = tmpNG.concat(x);
 		}
+		nG = tmpNG.concat();
 	}
-	return out;
+	return nG;
 };
 Petrick.expandTermIntoGroup = function(arr, arrs){
 	if(!ArrayUtil.isArray(arr) || !ArrayUtil.isArray(arrs)){
