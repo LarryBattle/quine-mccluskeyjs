@@ -86,27 +86,30 @@ describe("Petrick", function () {
 			assert.lengthOf( fn([]), 0);
 		});
 		it("should expand a single term to one term", function(){
-			assert.lengthOf( fn([[1]]), 1);
-			assert.lengthOf( fn([[1,2]]), 1);
-			assert.lengthOf( fn([[1,2,3]]), 1);
+			assert.lengthOf( fn([[[1]]]), 1);
+			assert.lengthOf( fn([[[1,2]]]), 1);
+			assert.lengthOf( fn([[[1,2,3]]]), 1);
 		});
 		it("should expand (p1)(p2) to 1 terms (p1p2)", function(){
-			assert.lengthOf( fn([[1], [2]]), 1);
+			assert.lengthOf( fn([[[1]], [[2]]]), 1);
 		});
 		it("should expand (p1)(p2)(p3) to 1 terms (p1p2p3)", function(){
-			assert.lengthOf( fn([[1], [2], [3]]), 1);
+			assert.lengthOf( fn([[[1]], [[2]], [[3]]]), 1);
 		});
 		it("should expand (p1 + p2)(p3) to 2 terms (p1p3 + p2p3)", function(){
-			assert.lengthOf( fn([[1,2],[3]]), 2);
+			assert.lengthOf( fn([[[1],[2]],[[3]]]), 2);
 		});
 		it("should expand (p1)(p2 + p3) to 2 terms (p1p2 + p1p3)", function(){
-			assert.lengthOf( fn([[1,2],[3]]), 2);
+			assert.lengthOf( fn([[[1]],[[2],[3]]]), 2);
 		});
 		it("should expand (p1 + p2)(p3 + p4) to 4 terms (p1p3 + p1p4 + p2p3 + p2p4)", function(){
-			assert.lengthOf( fn([[1,2],[3,4]]), 4);
+			assert.lengthOf( fn([[[1],[2]],[[3],[4]]]), 4);
 		});
 		it("should expand (p1 + p2)(p3 + p4 + p5) to 4 terms (p1p3 + p1p4 + p1p5 + p2p3 + p2p4 + p2p5)", function(){
-			assert.lengthOf( fn([[1,2],[3,4]]), 6);
+			assert.lengthOf( fn([[[1],[2]],[[3],[4],[5]]]), 6);
+		});
+		it("should expand (p1 + p2)(p1 + p3)(p3 + p4 + p5) to 12 terms (p1p3 + p1p4 + p1p5 + p1p2p3 + p1p2p4 + p1p2p5 + p1p3 + p1p3p4 + p1p3p5 + p2p3 + p2p3p4 + p2p3p5)", function(){
+			assert.lengthOf( fn([[[1],[2]],[[1],[3]],[[3],[4],[5]]]), 12);
 		});
 	});
 	describe("#getSOPs()", function () {
